@@ -43,11 +43,11 @@
       "x": 7,
       "f2": 3
     },
-    "L\nPOS1",
+    "L\nPos1",
     {
       "x": 1
     },
-    "Y\nEND"
+    "Y\nEnd"
   ],
   [
     {
@@ -83,7 +83,7 @@
       "t": "#fc9c2b",
       "a": 7
     },
-    "FN",
+    "Fn",
     {
       "t": "#000000",
       "a": 5
@@ -203,6 +203,7 @@
       "y": -0.75,
       "x": 3,
       "a": 5,
+      "t": "#000000\n#2d34e0",
       "f": 6,
       "fa": [
         5,
@@ -345,12 +346,12 @@
       "a": 5,
       "f": 3,
       "fa": [
-        5,
+        3,
         2
       ],
       "h": 2
     },
-    "SPC\n&darr; Alt-DOWN\n\n\n\n\nDOWN"
+    "Space\n&darr; Alt-Down\n\n\n\n\nDown"
   ],
   [
     {
@@ -361,7 +362,7 @@
       "f": 5,
       "h": 2
     },
-    "ESC\n\n\n\n\n\nCTL"
+    "Esc\n\n\n\n\n\nCtl"
   ],
   [
     {
@@ -380,7 +381,7 @@
       ],
       "h": 2
     },
-    "&crarr;\n&darr; Shift &darr; Alt\n\n\n\n\nCTL"
+    "&crarr;\n&darr; Shift &darr; Alt\n\n\n\n\nCtl"
   ],
   [
     {
@@ -410,6 +411,6 @@
       "a": 7,
       "f": 4
     },
-    "RCTL"
+    "RCtl"
   ]
 ]
