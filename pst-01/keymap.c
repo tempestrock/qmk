@@ -19,66 +19,57 @@
 enum layers {
     _COLEMAK_PST = 0,
     _DOWN,
-    _SYM,
     _FUNCTION,
     _ADJUST,
 };
 
-
 // Aliases for readability
 #define COLEMAK  DF(_COLEMAK_PST)
-
-#define SYM      MO(_SYM)
 #define D0WN     MO(_DOWN)
 #define FKEYS    MO(_FUNCTION)
 #define ADJUST   MO(_ADJUST)
 
-#define CTL_ESC  MT(MOD_LCTL, KC_ESC)
+#define SPC_DOWN LT(_DOWN, KC_SPC)       // Space when pressed,     _DOWN layer when held down
+#define ESC_CTL  MT(MOD_LCTL, KC_ESC)    // ESC when pressed,       Ctrl when held down
+#define ENT_CTL  MT(MOD_LCTL, KC_ENT)    // Enter when pressed,     Ctrl when held down
+#define BSP_SHFT LSFT_T(KC_BSPC)         // Backspace when pressed, Shift when held down
+
+
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
 
-// Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
-// The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
-// produces the key `tap` when tapped (i.e. pressed and released).
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-/*
- * Base Layer: Peter's Colemak
- */
+  /*
+   * Base Layer: Peter's Colemak
+   */
   [_COLEMAK_PST] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
       FKEYS  ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,                                               KC_J  ,  KC_L  ,  KC_U  ,  KC_Y  ,KC_PERC ,KC_CIRC ,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_AT  ,  KC_A  ,  KC_R  ,  KC_S  ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,  KC_E  ,  KC_I  ,  KC_H  , KC_EQL ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  , KC_SPC , KC_ESC ,          KC_ENT ,KC_BSPC ,  KC_K  ,  KC_O  , KC_DOT ,KC_COMM ,KC_SLSH , KC_DLR ,
+      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,  KC_O  , KC_DOT ,KC_COMM ,KC_SLSH , KC_DLR ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
-                                 KC_SPC , KC_TAB ,KC_LALT , KC_SPC , KC_ESC ,          KC_ENT ,KC_BSPC ,KC_RCTRL,KC_UNDS , KC_SPC
+                                 KC_SPC , KC_TAB ,KC_LALT ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,KC_UNDS , KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   ),
 
-/*
- * Nav Layer: Media, navigation
- *
- * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |      |      |      |      |                              | PgUp | Home |   ↑  | End  | VolUp| Delete |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |  GUI |  Alt | Ctrl | Shift|      |                              | PgDn |  ←   |   ↓  |   →  | VolDn| Insert |
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |ScLck |  |      |      | Pause|M Prev|M Play|M Next|VolMut| PrtSc  |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
- */
-    [_DOWN] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                                     KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_VOLU, KC_DEL,
-      _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                                     KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, KC_INS,
-      _______, _______, _______, _______, _______, _______, _______, KC_SLCK, _______, _______,KC_PAUSE, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_PSCR,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
-    ),
+  /*
+   * Nav Layer: Media, navigation
+   */
+  [_DOWN] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     _______ ,_______ ,  KC_9  ,  KC_8  ,  KC_7  ,KC_LCBR ,                                             KC_DQUO ,KC_HOME , KC_UP  , KC_END , KC_VOLU, KC_DEL,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
+      KC_LT  ,  KC_0  ,  KC_3  ,  KC_2  ,  KC_1  ,KC_LPRN ,                                     KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, KC_INS,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______ ,_______ ,  KC_6  ,  KC_5  ,  KC_4  ,KC_LBRC , _______, KC_SLCK, _______, _______,KC_PAUSE, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_PSCR,
+  //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
+                                _______ ,_______ ,_______ ,_______ ,_______ ,         _______ ,_______ ,_______ ,_______ ,_______
+  //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
+  ),
 
 /*
  * Sym Layer: Numbers and symbols
@@ -169,6 +160,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 //     ),
 };
+// clang-format on
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
  * These default settings can be overriden by your own settings in your keymap.c
