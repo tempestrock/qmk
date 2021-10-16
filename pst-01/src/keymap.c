@@ -16,6 +16,10 @@
  */
 #include QMK_KEYBOARD_H
 
+/* -------------------------------------------------------------------------- */
+/*                              KEYMAP DEFINITION                             */
+/* -------------------------------------------------------------------------- */
+
 enum layers {
     _COLEMAK_PST = 0,
     _DOWN,
@@ -32,12 +36,18 @@ enum layers {
 #define SPC_DOWN LT(_DOWN, KC_SPC)       // Space when pressed,     _DOWN layer when held down
 #define ESC_CTL  MT(MOD_LCTL, KC_ESC)    // ESC when pressed,       Ctrl when held down
 #define ENT_CTL  MT(MOD_LCTL, KC_ENT)    // Enter when pressed,     Ctrl when held down
-#define BSP_SHFT LSFT_T(KC_BSPC)         // Backspace when pressed, Shift when held down
-
+#define BSP_SHFT LSFT_T(KC_BSPC)         // Backspace when pressed, left Shift when held down
 
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
+
+// My own custom key codes
+enum custom_keycodes {
+    CK_ATPI = SAFE_RANGE,                // @ --> |
+    CK_CMCO                              // , --> :
+};
+
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -48,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
       FKEYS  ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,                                               KC_J  ,  KC_L  ,  KC_U  ,  KC_Y  ,KC_PERC ,KC_CIRC ,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_AT  ,  KC_A  ,  KC_R  ,  KC_S  ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,  KC_E  ,  KC_I  ,  KC_H  , KC_EQL ,
+     CK_ATPI ,  KC_A  ,  KC_R  ,  KC_S  ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,  KC_E  ,  KC_I  ,  KC_H  , KC_EQL ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,  KC_O  , KC_DOT ,KC_COMM ,KC_SLSH , KC_DLR ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
@@ -57,17 +67,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   /*
-   * Nav Layer: Media, navigation
+   * Down: All necessary other keys
    */
   [_DOWN] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______ ,_______ ,  KC_9  ,  KC_8  ,  KC_7  ,KC_LCBR ,                                             KC_DQUO ,KC_HOME , KC_UP  , KC_END , KC_VOLU, KC_DEL,
+     _______ ,_______ ,  KC_9  ,  KC_8  ,  KC_7  ,KC_LCBR ,                                             KC_DQUO ,KC_HOME , KC_UP  , KC_END , KC_NO  , KC_GRV ,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LT  ,  KC_0  ,  KC_3  ,  KC_2  ,  KC_1  ,KC_LPRN ,                                     KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, KC_INS,
+      KC_LT  ,  KC_0  ,  KC_3  ,  KC_2  ,  KC_1  ,KC_LPRN ,                                             KC_QUOTE,KC_LEFT ,KC_DOWN ,KC_RGHT , KC_NO  , KC_DLR ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______ ,_______ ,  KC_6  ,  KC_5  ,  KC_4  ,KC_LBRC , _______, KC_SLCK, _______, _______,KC_PAUSE, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_PSCR,
+     _______ ,_______ ,  KC_6  ,  KC_5  ,  KC_4  ,KC_LBRC ,_______ ,_______ ,         _______ , KC_DEL ,KC_QUES ,KC_MINUS,KC_PLUS ,KC_EXLM , KC_NO  , KC_NO  ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
-                                _______ ,_______ ,_______ ,_______ ,_______ ,         _______ ,_______ ,_______ ,_______ ,_______
+                                _______ ,_______ ,_______ ,_______ ,_______ ,         _______ , KC_DEL ,_______ ,_______ ,_______
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   ),
 
@@ -85,26 +95,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
+/*
     [_SYM] = LAYOUT(
       KC_GRV ,   KC_1 ,   KC_2 ,   KC_3 ,   KC_4 ,   KC_5 ,                                       KC_6 ,   KC_7 ,   KC_8 ,   KC_9 ,   KC_0 , KC_EQL ,
      KC_TILD , KC_EXLM,  KC_AT , KC_HASH,  KC_DLR, KC_PERC,                                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
      KC_PIPE , KC_BSLS, KC_COLN, KC_SCLN, KC_MINS, KC_LBRC, KC_LCBR, _______, _______, KC_RCBR, KC_RBRC, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
-
+*/
 /*
  * Function Layer: Function keys
- *
- * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |  F9  | F10  | F11  | F12  |      |                              |      |      |      |      |      |        |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |  F5  |  F6  |  F7  |  F8  |      |                              |      | Shift| Ctrl |  Alt |  GUI |        |
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |  F1  |  F2  |  F3  |  F4  |      |      |      |  |      |      |      |      |      |      |      |        |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
  */
   [_FUNCTION] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -161,6 +161,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //     ),
 };
 // clang-format on
+
+
+/* -------------------------------------------------------------------------- */
+/*                                 USER INPUT                                 */
+/* -------------------------------------------------------------------------- */
+
+//
+// Callback function that is called whenever a key is pressed.
+// @param keycode the code of the key that was pressed
+// @param record contains information about the actual press
+// @return true if QMK shall continue to process the key event, false otherwise.
+//
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case CK_ATPI:
+      if (record->event.pressed){
+        if (get_mods() & MOD_BIT(KC_LSHIFT)){
+          register_code(KC_SLSH);
+        } else {
+          register_code(KC_DOT);
+        }
+      } else {
+        unregister_code(KC_SLSH);
+        unregister_code(KC_DOT);
+      }return false
+      
+    default:
+      return true;
+  }
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                                OLED OUTPUT                                 */
+/* -------------------------------------------------------------------------- */
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
  * These default settings can be overriden by your own settings in your keymap.c
