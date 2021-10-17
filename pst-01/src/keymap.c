@@ -42,10 +42,13 @@ enum layers {
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
 
-// My own custom key codes
+// My own custom key codes:
 enum custom_keycodes {
-    CK_ATPI = SAFE_RANGE,                // @ --> |
-    CK_CMCO                              // , --> :
+  // Special symbol keys:
+  S_ATPIPE = SAFE_RANGE,               // @ --> |
+  S_DOTCOL,                            // . --> :
+  CK_CMCO,                             // , --> ;
+  S_BRCKET                             // [ --> ]
 };
 
 
@@ -58,9 +61,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
       FKEYS  ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,                                               KC_J  ,  KC_L  ,  KC_U  ,  KC_Y  ,KC_PERC ,KC_CIRC ,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     CK_ATPI ,  KC_A  ,  KC_R  ,  KC_S  ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,  KC_E  ,  KC_I  ,  KC_H  , KC_EQL ,
+     S_ATPIPE,  KC_A  ,  KC_R  ,  KC_S  ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,  KC_E  ,  KC_I  ,  KC_H  , KC_EQL ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,  KC_O  , KC_DOT ,KC_COMM ,KC_SLSH , KC_DLR ,
+      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,  KC_O  ,S_DOTCOL,KC_COMM ,KC_SLSH , KC_DLR ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                  KC_SPC , KC_TAB ,KC_LALT ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,KC_UNDS , KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -75,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_LT  ,  KC_0  ,  KC_3  ,  KC_2  ,  KC_1  ,KC_LPRN ,                                             KC_QUOTE,KC_LEFT ,KC_DOWN ,KC_RGHT , KC_NO  , KC_DLR ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______ ,_______ ,  KC_6  ,  KC_5  ,  KC_4  ,KC_LBRC ,_______ ,_______ ,         _______ , KC_DEL ,KC_QUES ,KC_MINUS,KC_PLUS ,KC_EXLM , KC_NO  , KC_NO  ,
+     _______ ,_______ ,  KC_6  ,  KC_5  ,  KC_4  ,S_BRCKET,_______ ,_______ ,         _______ , KC_DEL ,KC_QUES ,KC_MINUS,KC_PLUS ,KC_EXLM , KC_NO  , KC_NO  ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 _______ ,_______ ,_______ ,_______ ,_______ ,         _______ , KC_DEL ,_______ ,_______ ,_______
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -166,6 +169,47 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* -------------------------------------------------------------------------- */
 /*                                 USER INPUT                                 */
 /* -------------------------------------------------------------------------- */
+/*
+
+----- Special symbols handling -----
+We define the handling of symbols quite on our own, including the combination of symbols that lie on the <Shift>-<whatever> keys.
+This leads to various combinations of what needs to be caught when a symbol key is pressed: Each key may be pressed without or with
+the <Shift> key. 
+
+| Character | my keymap | US keymap |
+├───────────┼───────────┼───────────┤
+|  -        | no shift  | no shift  |
+|  _        | shift (-) | shift (-) |
+|  .        | no shift  | no shift  |
+|  :        | shift (.) | shift (;) |
+|  ,        | no shift  | no shift  |
+|  ;        | shift (,) | no shift  |
+|  ‘        | no shift  | no shift  |
+|  “        | shift (‘) | shift (‘) |
+|  !        | no shift  | shift (1) |
+|  ?        | no shift  | shift (/) |
+|  +        | no shift  | shift (=) |
+|  #        | shift (+) | shift (3) |
+|  =        | no shift  | no shift  |
+|  *        | shift (=) | shift (8) |
+|  %        | no shift  | shift (5) |
+|  &        | shift (%) | shift (7) |
+|  ^        | no shift  | shift (6) |
+|  `        | shift (^) | no shift  |
+|  ´        |  no shift
+|  /        | no shift  | no shift  |
+|  ~        | shift (/) | no shift? |
+|  $        | no shift  | shift (4) |
+|  paragraph
+|  <        | no shift  | shift (,) |
+|  >        | shift (<) | shift (.) |
+|  {        | no shift  | shift ([) |
+|  }        | shift (}) | shift (]) |
+|  (        | no shift  | shift (9) |
+|  )        | shift (() | shift (0) |
+|  [        | no shift  | no shift  |
+|  ]        | shift ([) | no shift  |
+*/
 
 //
 // Callback function that is called whenever a key is pressed.
@@ -175,17 +219,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case CK_ATPI:
-      if (record->event.pressed){
-        if (get_mods() & MOD_BIT(KC_LSHIFT)){
-          register_code(KC_SLSH);
+    case S_ATPIPE: // @ --> | where @ is shift(2) and | is shift(\)
+      if (record->event.pressed) {
+        if (!(get_mods() & MOD_BIT(KC_LSHIFT))) {
+          // 
+          // Shift key not pressed. In order to get @ pressed, we need to press <Shift>-2.
+          register_code(KC_LSHIFT); // turn on shift
+          register_code(KC_2); // press key
+          unregister_code(KC_LSHIFT); // turn off shift
         } else {
-          register_code(KC_DOT);
+          // Shift key pressed. In order to get | pressed, we only need to press \ now.
+          register_code(KC_BSLASH);
         }
       } else {
-        unregister_code(KC_SLSH);
+          unregister_code(KC_2);
+          unregister_code(KC_BSLASH);
+      }
+      return false;
+
+    case S_DOTCOL: // . --> : where . is . and : is shift(;)
+      if (record->event.pressed) {
+        if (!(get_mods() & MOD_BIT(KC_LSHIFT))) {
+          register_code(KC_DOT); // press . with no shift
+        } else {
+          register_code(KC_SCLN); // shift is already pressed. Now press ; in order to get :
+        }
+      } else {
         unregister_code(KC_DOT);
-      }return false
+        unregister_code(KC_SCLN);
+      }
+      return false;
+
+    case S_BRCKET: // [ --> ] where [ is [ and ] is ]
+      if (record->event.pressed) {
+        if (!(get_mods() & MOD_BIT(KC_LSHIFT))) {
+          register_code(KC_LBRC); // [, no shift
+        } else {
+          unregister_code(KC_LSHIFT); // turn off shift
+          register_code(KC_RBRC); // press ]
+          register_code(KC_LSHIFT); // turn on shift again so that lifting the shift key afterwards makes sense 
+        }
+      } else {
+        unregister_code(KC_LBRC);
+        unregister_code(KC_RBRC);
+      }
+      return false;
       
     default:
       return true;
