@@ -212,6 +212,17 @@ the <Shift> key.
 */
 
 /*
+ * Partner definitions: Which key needs to be pressed together with <Shift> in order to get the actual key.
+ * PK stands for 'partner key'.
+ */
+#define PK_AT KC_2
+#define PK_PIPE KC_BSLASH
+#define PK_DOT KC_DOT
+#define PK_COLON KC_SCLN
+#define PK_LBRACKET KC_LBRC
+#define PK_RBRACKET KC_RBRC
+
+/*
  * Handling of special keys for the case that:
  *  normal usage shall create a key press of a key code that needs <Shift>,
  *  shift usage shall create a key press of a key code that does not need <Shift>.
@@ -317,14 +328,14 @@ the <Shift> key.
 //
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case S_ATPIPE: // @ --> | where @ is shift(2) and | is shift(\)
-      NSHIFT_SSHIFT(KC_2, KC_BSLASH)
+    case S_ATPIPE: // @ --> |
+      NSHIFT_SSHIFT(PK_AT, PK_PIPE)
 
-    case S_DOTCOL: // . --> : where . is . and : is shift(;)
-      NNOSHIFT_SSHIFT(KC_DOT, KC_SCLN)
+    case S_DOTCOL: // . --> :
+      NNOSHIFT_SSHIFT(PK_DOT, PK_COLON)
 
-    case S_BRCKET: // [ --> ] where [ is [ and ] is ]
-      NNOSHIFT_SNOSHIFT(KC_LBRC, KC_RBRC)
+    case S_BRCKET: // [ --> ]
+      NNOSHIFT_SNOSHIFT(PK_LBRACKET, PK_RBRACKET)
       
     default:
       return true;
