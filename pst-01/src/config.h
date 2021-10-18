@@ -16,6 +16,8 @@
 
 #pragma once
 
+#define TAPPING_TERM 175
+
 #ifdef RGBLIGHT_ENABLE
 #    define RGBLIGHT_ANIMATIONS
 #    define RGBLIGHT_HUE_STEP  8

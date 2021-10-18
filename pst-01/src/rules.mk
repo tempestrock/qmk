@@ -18,5 +18,5 @@ RGBLIGHT_ENABLE = yes      # Enable keyboard RGB underglow
 SLEEP_LED_ENABLE = no
 SPLIT_TRANSPORT = mirror
 SWAP_HANDS_ENABLE = no     # Allow swapping hands of keyboard
-# TAP_DANCE_ENABLE = yes
-UNICODE_ENABLE = no        # Unicode
+TAP_DANCE_ENABLE = yes     # Allow tap dancing
+UNICODE_ENABLE = yes       # Unicode for Umlauts

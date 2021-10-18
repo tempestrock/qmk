@@ -21,11 +21,12 @@
 /*                              KEYMAP DEFINITION                             */
 /* -------------------------------------------------------------------------- */
 
+// --------------- Constants ---------------
 enum layers {
-    _COLEMAK_PST = 0,
-    _DOWN,
-    _FUNCTION,
-    _ADJUST,
+  _COLEMAK_PST = 0,
+  _DOWN,
+  _FUNCTION,
+  _ADJUST
 };
 
 // Aliases for readability
@@ -41,6 +42,19 @@ enum layers {
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
+
+#define TD_A_AE  TD(TD_A_TO_AE)
+#define TD_E_EUR TD(TD_E_TO_EUR)
+#define TD_O_OE  TD(TD_O_TO_OE)
+#define TD_U_UE  TD(TD_U_TO_UE)
+#define TD_S_SZ  TD(TD_S_TO_SZ)
+
+// Umlauts:
+#define DE_ae UC(0x00E4)
+#define DE_eur UC(0x20AC)
+#define DE_oe UC(0x00F6)
+#define DE_ue UC(0x00FC)
+#define DE_sz UC(0x00DF)
 
 // My own custom key codes:
 enum custom_keycodes {
@@ -59,6 +73,23 @@ enum custom_keycodes {
   S_USCHAS                 // _ --> #
 };
 
+// --------------- Tap Dance definitions ---------------
+enum {
+    TD_A_TO_AE,
+    TD_E_TO_EUR,
+    TD_O_TO_OE,
+    TD_U_TO_UE,
+    TD_S_TO_SZ
+};
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for Escape, twice for Caps Lock
+    [TD_A_TO_AE] = ACTION_TAP_DANCE_DOUBLE(KC_A, DE_ae),
+    [TD_E_TO_EUR] = ACTION_TAP_DANCE_DOUBLE(KC_E, DE_eur),
+    [TD_O_TO_OE] = ACTION_TAP_DANCE_DOUBLE(KC_O, DE_oe),
+    [TD_U_TO_UE] = ACTION_TAP_DANCE_DOUBLE(KC_U, DE_ue),
+    [TD_S_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_S, DE_sz)
+};
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -67,11 +98,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_COLEMAK_PST] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      FKEYS  ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,                                               KC_J  ,  KC_L  ,  KC_U  ,  KC_Y  ,S_PRCAMP,S_CIRGRV,
+      FKEYS  ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,                                               KC_J  ,  KC_L  ,TD_U_UE ,  KC_Y  ,S_PRCAMP,S_CIRGRV,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     S_ATPIPE,  KC_A  ,  KC_R  ,  KC_S  ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,  KC_E  ,  KC_I  ,  KC_H  ,S_EQUMUL,
+     S_ATPIPE,TD_A_AE ,  KC_R  ,TD_S_SZ ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,TD_E_EUR,  KC_I  ,  KC_H  ,S_EQUMUL,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,  KC_O  ,S_DOTCOL,S_COMSEM,S_SLSTIL, KC_DLR ,
+      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL, KC_DLR ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                  KC_SPC , KC_TAB ,KC_LALT ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -146,6 +177,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case S_ATPIPE: // @ --> |
       NSHIFT_SSHIFT(PK_AT, PK_PIPE);
 
+    case S_ANGLEB: // < --> >
     case S_CBRCKT: // { --> }
     case S_PARNTH: // ( --> )
 
