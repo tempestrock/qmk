@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "shift-handling.h"
 
 /* -------------------------------------------------------------------------- */
 /*                              KEYMAP DEFINITION                             */
@@ -45,10 +46,17 @@ enum layers {
 // My own custom key codes:
 enum custom_keycodes {
   // Special symbol keys:
-  S_ATPIPE = SAFE_RANGE,               // @ --> |
-  S_DOTCOL,                            // . --> :
-  CK_CMCO,                             // , --> ;
-  S_BRCKET                             // [ --> ]
+  S_ATPIPE = SAFE_RANGE,   // @ --> |
+  S_CBRCKT,                // { --> }
+  S_PARNTH,                // ( --> )
+  S_BRCKET,                // [ --> ]
+  S_DOTCOL,                // . --> :
+  S_COMSEM,                // , --> ;
+  S_SLSTIL,                // / --> ~
+  S_PRCAMP,                // % --> &
+  S_CIRGRV,                // ^ --> `
+  S_EQUMUL,                // = --> *
+  S_USCHAS                 // _ --> #
 };
 
 
@@ -169,156 +177,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* -------------------------------------------------------------------------- */
 /*                                 USER INPUT                                 */
 /* -------------------------------------------------------------------------- */
-/*
-
------ Special symbols handling -----
-We define the handling of symbols quite on our own, including the combination of symbols that lie on the <Shift>-<whatever> keys.
-This leads to various combinations of what needs to be caught when a symbol key is pressed: Each key may be pressed without or with
-the <Shift> key. 
-
-| Character | my keymap | US keymap |
-├───────────┼───────────┼───────────┤
-|  -        | no shift  | no shift  |
-|  _        | shift (-) | shift (-) |
-|  .        | no shift  | no shift  |
-|  :        | shift (.) | shift (;) |
-|  ,        | no shift  | no shift  |
-|  ;        | shift (,) | no shift  |
-|  ‘        | no shift  | no shift  |
-|  “        | shift (‘) | shift (‘) |
-|  !        | no shift  | shift (1) |
-|  ?        | no shift  | shift (/) |
-|  +        | no shift  | shift (=) |
-|  #        | shift (+) | shift (3) |
-|  =        | no shift  | no shift  |
-|  *        | shift (=) | shift (8) |
-|  %        | no shift  | shift (5) |
-|  &        | shift (%) | shift (7) |
-|  ^        | no shift  | shift (6) |
-|  `        | shift (^) | no shift  |
-|  ´        |  no shift
-|  /        | no shift  | no shift  |
-|  ~        | shift (/) | no shift? |
-|  $        | no shift  | shift (4) |
-|  paragraph
-|  <        | no shift  | shift (,) |
-|  >        | shift (<) | shift (.) |
-|  {        | no shift  | shift ([) |
-|  }        | shift (}) | shift (]) |
-|  (        | no shift  | shift (9) |
-|  )        | shift (() | shift (0) |
-|  [        | no shift  | no shift  |
-|  ]        | shift ([) | no shift  |
-*/
-
-/*
- * Partner definitions: Which key needs to be pressed together with <Shift> in order to get the actual key.
- * PK stands for 'partner key'.
- */
-#define PK_AT KC_2
-#define PK_PIPE KC_BSLASH
-#define PK_DOT KC_DOT
-#define PK_COLON KC_SCLN
-#define PK_LBRACKET KC_LBRC
-#define PK_RBRACKET KC_RBRC
-
-/*
- * Handling of special keys for the case that:
- *  normal usage shall create a key press of a key code that needs <Shift>,
- *  shift usage shall create a key press of a key code that does not need <Shift>.
- * @param kc1 the key code for the normal usage that is to be pressed directly
- * @param kc2 the key code for shift usage that is to be pressed directly
- */
-#define NNOSHIFT_SNOSHIFT(kc1,kc2) \
-  if (record->event.pressed) { \
-    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
-      /* press the 1st key directly without shift */ \
-      register_code(kc1); \
-    } else { \
-      /* Shift is pressed but we don't want that. --> turn off shift */ \
-      unregister_code(KC_LSHIFT); \
-      register_code(kc2); \
-      /* Turn on shift again so that lifting the shift key afterwards makes sense */ \
-      register_code(KC_LSHIFT); \
-    } \
-  } else { \
-    unregister_code(kc1); \
-    unregister_code(kc2); \
-  } \
-  return false;
-
-/*
- * Handling of special keys for the case that:
- *  normal usage shall create a key press of a key code that does not need <Shift>,
- *  shift usage shall create a key press of a key code that needs <Shift>.
- * @param kc1 the key code for the normal usage that is to be pressed directly
- * @param kc2 the key code for shift usage that results in the wanted key code when <Shift> is pressed
- */
-#define NNOSHIFT_SSHIFT(kc1,kc2) \
-  if (record->event.pressed) { \
-    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
-      /* press the 1st key without shift */ \
-      register_code(kc1); \
-    } else { \
-      /* Shift is already pressed. Now press kc2 in order to get the actually wanted result */ \
-      register_code(kc2); \
-    } \
-  } else { \
-    unregister_code(kc1); \
-    unregister_code(kc2); \
-  } \
-  return false;
-
-/*
- * Handling of special keys for the case that:
- *  normal usage shall create a key press of a key code that needs <Shift>,
- *  shift usage shall create a key press of a key code that does not need <Shift>.
- * @param kc1 the key code for the normal usage that results in the wanted key code when <Shift> is pressed
- * @param kc2 the key code for shift usage that is to be pressed directly
- */
-#define NSHIFT_SNOSHIFT(kc1,kc2) \
-  if (record->event.pressed) { \
-    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
-      /* Shift key not pressed. In order to get the resulting key pressed, we need to press <Shift>-kc1 */ \
-      register_code(KC_LSHIFT); \
-      register_code(kc1); \
-      unregister_code(KC_LSHIFT); \
-    } else { \
-      /* Shift is pressed but we don't want that. --> turn off shift */ \
-      unregister_code(KC_LSHIFT); \
-      register_code(kc2); \
-      /* Turn on shift again so that lifting the shift key afterwards makes sense */ \
-      register_code(KC_LSHIFT); \
-    } \
-  } else { \
-    unregister_code(kc1); \
-    unregister_code(kc2); \
-  } \
-  return false;
-
-/*
- * Handling of special keys for the case that:
- *  normal usage (without <Shift> key) shall create a key press of a key code that needs <Shift>,
- *  shift usage shall create a key press of a key code that needs <Shift>.
- * @param kc1 the key code for the normal usage that results in the wanted key code when <Shift> is pressed
- * @param kc2 the key code for shift usage that results in the wanted key code when <Shift> is pressed
- */
-#define NSHIFT_SSHIFT(kc1,kc2) \
-  if (record->event.pressed) { \
-    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
-      /* Shift key not pressed. In order to get the resulting key pressed, we need to press <Shift>-kc1 */ \
-      register_code(KC_LSHIFT); \
-      register_code(kc1); \
-      unregister_code(KC_LSHIFT); \
-    } else { \
-      /* Shift is already pressed. Now press kc2 in order to get the actually wanted result */ \
-      register_code(kc2); \
-    } \
-  } else { \
-    unregister_code(kc1); \
-    unregister_code(kc2); \
-  } \
-  return false;
 
 //
 // Callback function that is called whenever a key is pressed.
@@ -329,14 +187,24 @@ the <Shift> key.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case S_ATPIPE: // @ --> |
-      NSHIFT_SSHIFT(PK_AT, PK_PIPE)
+      NSHIFT_SSHIFT(PK_AT, PK_PIPE);
 
-    case S_DOTCOL: // . --> :
-      NNOSHIFT_SSHIFT(PK_DOT, PK_COLON)
+    case S_CBRCKT: // { --> }
+    case S_PARNTH: // ( --> )
 
     case S_BRCKET: // [ --> ]
-      NNOSHIFT_SNOSHIFT(PK_LBRACKET, PK_RBRACKET)
+      NNOSHIFT_SNOSHIFT(KC_LBRC, KC_RBRC);
       
+    case S_DOTCOL: // . --> :
+      NNOSHIFT_SSHIFT(KC_DOT, PK_COLON);
+
+    case S_COMSEM: // , --> ;
+    case S_SLSTIL: // / --> ~
+    case S_PRCAMP: // % --> &
+    case S_CIRGRV: // ^ --> `
+    case S_EQUMUL: // = --> *
+    case S_USCHAS: // _ --> #
+
     default:
       return true;
   }
