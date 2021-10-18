@@ -13,48 +13,36 @@
 | Character | my keymap | US keymap |
 ├───────────┼───────────┼───────────┤
 |  -        | no shift  | no shift  |
-|  _        | shift (-) | shift (-) |
-|  .        | no shift  | no shift  |
-|  :        | shift (.) | shift (;) |
-|  ,        | no shift  | no shift  |
-|  ;        | shift (,) | no shift  |
 |  ‘        | no shift  | no shift  |
 |  “        | shift (‘) | shift (‘) |
 |  !        | no shift  | shift (1) |
 |  ?        | no shift  | shift (/) |
 |  +        | no shift  | shift (=) |
-|  #        | shift (+) | shift (3) |
-|  =        | no shift  | no shift  |
-|  *        | shift (=) | shift (8) |
-|  %        | no shift  | shift (5) |
-|  &        | shift (%) | shift (7) |
-|  ^        | no shift  | shift (6) |
-|  `        | shift (^) | no shift  |
-|  ´        |  no shift
-|  /        | no shift  | no shift  |
-|  ~        | shift (/) | no shift? |
+|  ´        | no shift
 |  $        | no shift  | shift (4) |
 |  paragraph
-|  <        | no shift  | shift (,) |
-|  >        | shift (<) | shift (.) |
-|  {        | no shift  | shift ([) |
-|  }        | shift (}) | shift (]) |
-|  (        | no shift  | shift (9) |
-|  )        | shift (() | shift (0) |
-|  [        | no shift  | no shift  |
-|  ]        | shift ([) | no shift  |
 */
 
 /*
  * Partner definitions: Which key needs to be pressed together with <Shift> in order to get the actual key.
  * PK stands for 'partner key'.
  */
-#define PK_AT KC_2
-#define PK_PIPE KC_BSLASH
-#define PK_DOT KC_DOT
-#define PK_COLON KC_SCLN
-#define PK_LBRACKET KC_LBRC
-#define PK_RBRACKET KC_RBRC
+#define PK_AT KC_2                 // 2 --> @
+#define PK_PIPE KC_BSLASH          // / --> |
+#define PK_COLON KC_SCLN           // ; --> :
+#define PK_LANGLEBR KC_COMMA       // , --> <
+#define PK_RANGLEBR KC_DOT         // . --> >
+#define PK_LCURLBRKT KC_LBRACKET   // [ --> {
+#define PK_RCURLBRKT KC_RBRACKET   // ] --> }
+#define PK_LPAREN KC_9             // 9 --> (
+#define PK_RPAREN KC_0             // 0 --> )
+#define PK_TILDA KC_NONUS_HASH     // # --> ~
+#define PK_PERCENT KC_5            // 5 --> %
+#define PK_AMPERSAND KC_7          // 7 --> &
+#define PK_CIRCUMFLEX KC_6         // 6 --> ^
+#define PK_ASTERISK KC_8           // 8 --> *
+#define PK_UNDERSCORE KC_MINUS     // - --> _
+#define PK_HASH KC_3               // 3 --> #
 
 /*
  * Handling of special keys for the case that:
@@ -65,15 +53,15 @@
  */
 #define NNOSHIFT_SNOSHIFT(kc1,kc2) \
   if (record->event.pressed) { \
-    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
+    if (!(get_mods() & MOD_BIT(KC_RSHIFT))) { \
       /* press the 1st key directly without shift */ \
       register_code(kc1); \
     } else { \
       /* Shift is pressed but we don't want that. --> turn off shift */ \
-      unregister_code(KC_LSHIFT); \
+      unregister_code(KC_RSHIFT); \
       register_code(kc2); \
       /* Turn on shift again so that lifting the shift key afterwards makes sense */ \
-      register_code(KC_LSHIFT); \
+      register_code(KC_RSHIFT); \
     } \
   } else { \
     unregister_code(kc1); \
@@ -90,7 +78,7 @@
  */
 #define NNOSHIFT_SSHIFT(kc1,kc2) \
   if (record->event.pressed) { \
-    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
+    if (!(get_mods() & MOD_BIT(KC_RSHIFT))) { \
       /* press the 1st key without shift */ \
       register_code(kc1); \
     } else { \
@@ -112,17 +100,17 @@
  */
 #define NSHIFT_SNOSHIFT(kc1,kc2) \
   if (record->event.pressed) { \
-    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
+    if (!(get_mods() & MOD_BIT(KC_RSHIFT))) { \
       /* Shift key not pressed. In order to get the resulting key pressed, we need to press <Shift>-kc1 */ \
-      register_code(KC_LSHIFT); \
+      register_code(KC_RSHIFT); \
       register_code(kc1); \
-      unregister_code(KC_LSHIFT); \
+      unregister_code(KC_RSHIFT); \
     } else { \
       /* Shift is pressed but we don't want that. --> turn off shift */ \
-      unregister_code(KC_LSHIFT); \
+      unregister_code(KC_RSHIFT); \
       register_code(kc2); \
       /* Turn on shift again so that lifting the shift key afterwards makes sense */ \
-      register_code(KC_LSHIFT); \
+      register_code(KC_RSHIFT); \
     } \
   } else { \
     unregister_code(kc1); \
@@ -139,11 +127,11 @@
  */
 #define NSHIFT_SSHIFT(kc1,kc2) \
   if (record->event.pressed) { \
-    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
+    if (!(get_mods() & MOD_BIT(KC_RSHIFT))) { \
       /* Shift key not pressed. In order to get the resulting key pressed, we need to press <Shift>-kc1 */ \
-      register_code(KC_LSHIFT); \
+      register_code(KC_RSHIFT); \
       register_code(kc1); \
-      unregister_code(KC_LSHIFT); \
+      unregister_code(KC_RSHIFT); \
     } else { \
       /* Shift is already pressed. Now press kc2 in order to get the actually wanted result */ \
       register_code(kc2); \

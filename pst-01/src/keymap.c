@@ -37,7 +37,7 @@ enum layers {
 #define SPC_DOWN LT(_DOWN, KC_SPC)       // Space when pressed,     _DOWN layer when held down
 #define ESC_CTL  MT(MOD_LCTL, KC_ESC)    // ESC when pressed,       Ctrl when held down
 #define ENT_CTL  MT(MOD_LCTL, KC_ENT)    // Enter when pressed,     Ctrl when held down
-#define BSP_SHFT LSFT_T(KC_BSPC)         // Backspace when pressed, left Shift when held down
+#define BSP_SHFT RSFT_T(KC_BSPC)         // Backspace when pressed, right Shift when held down
 
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
@@ -69,11 +69,12 @@ enum custom_keycodes {
   S_SLSTIL,                // / --> ~
   S_PRCAMP,                // % --> &
   S_CIRGRV,                // ^ --> `
-  S_EQUMUL,                // = --> *
+  S_EQUAST,                // = --> *
   S_USCHAS                 // _ --> #
 };
 
 // --------------- Tap Dance definitions ---------------
+
 enum {
     TD_A_TO_AE,
     TD_E_TO_EUR,
@@ -91,7 +92,10 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_S_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_S, DE_sz)
 };
 
-// clang-format off
+// TODO: Unclear: What happens with capital umlauts like Ä, Ö, Ü, and capital ß?
+
+// --------------- The actual keymap ---------------
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /*
    * Base Layer: Peter's Colemak
@@ -100,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
       FKEYS  ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,                                               KC_J  ,  KC_L  ,TD_U_UE ,  KC_Y  ,S_PRCAMP,S_CIRGRV,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     S_ATPIPE,TD_A_AE ,  KC_R  ,TD_S_SZ ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,TD_E_EUR,  KC_I  ,  KC_H  ,S_EQUMUL,
+     S_ATPIPE,TD_A_AE ,  KC_R  ,TD_S_SZ ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,TD_E_EUR,  KC_I  ,  KC_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL, KC_DLR ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
@@ -159,7 +163,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  _______, _______, _______,_______, _______, _______, _______, _______, _______, _______
     ),
 };
-// clang-format on
 
 
 /* -------------------------------------------------------------------------- */
@@ -178,21 +181,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       NSHIFT_SSHIFT(PK_AT, PK_PIPE);
 
     case S_ANGLEB: // < --> >
+      NSHIFT_SSHIFT(PK_LANGLEBR, PK_RANGLEBR);
+
     case S_CBRCKT: // { --> }
+      NSHIFT_SSHIFT(PK_LCURLBRKT, PK_RCURLBRKT);
+
     case S_PARNTH: // ( --> )
+      NSHIFT_SSHIFT(PK_LPAREN, PK_RPAREN);
 
     case S_BRCKET: // [ --> ]
-      NNOSHIFT_SNOSHIFT(KC_LBRC, KC_RBRC);
+      NNOSHIFT_SNOSHIFT(KC_LBRACKET, KC_RBRACKET);
       
     case S_DOTCOL: // . --> :
       NNOSHIFT_SSHIFT(KC_DOT, PK_COLON);
 
     case S_COMSEM: // , --> ;
+      NNOSHIFT_SNOSHIFT(KC_COMMA, KC_SCOLON);
+
     case S_SLSTIL: // / --> ~
+      NNOSHIFT_SSHIFT(KC_SLASH, PK_TILDA);
+
     case S_PRCAMP: // % --> &
+      NSHIFT_SSHIFT(PK_PERCENT, PK_AMPERSAND);
+
     case S_CIRGRV: // ^ --> `
-    case S_EQUMUL: // = --> *
+      NSHIFT_SNOSHIFT(PK_CIRCUMFLEX, KC_GRAVE);
+
+    case S_EQUAST: // = --> *
+      NNOSHIFT_SSHIFT(KC_EQUAL, PK_ASTERISK);
+
     case S_USCHAS: // _ --> #
+      NSHIFT_SSHIFT(PK_UNDERSCORE, PK_HASH)
+
+    // TODO: Probably also those keys that only have a symbol but no <Shift>-<symbol> will need to get an NNOSHIFT_SNOOP
+    //       NSHIFT_SNOOP, respectively.
 
     default:
       return true;
