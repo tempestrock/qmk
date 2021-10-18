@@ -211,6 +211,104 @@ the <Shift> key.
 |  ]        | shift ([) | no shift  |
 */
 
+/*
+ * Handling of special keys for the case that:
+ *  normal usage shall create a key press of a key code that needs <Shift>,
+ *  shift usage shall create a key press of a key code that does not need <Shift>.
+ * @param kc1 the key code for the normal usage that is to be pressed directly
+ * @param kc2 the key code for shift usage that is to be pressed directly
+ */
+#define NNOSHIFT_SNOSHIFT(kc1,kc2) \
+  if (record->event.pressed) { \
+    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
+      /* press the 1st key directly without shift */ \
+      register_code(kc1); \
+    } else { \
+      /* Shift is pressed but we don't want that. --> turn off shift */ \
+      unregister_code(KC_LSHIFT); \
+      register_code(kc2); \
+      /* Turn on shift again so that lifting the shift key afterwards makes sense */ \
+      register_code(KC_LSHIFT); \
+    } \
+  } else { \
+    unregister_code(kc1); \
+    unregister_code(kc2); \
+  } \
+  return false;
+
+/*
+ * Handling of special keys for the case that:
+ *  normal usage shall create a key press of a key code that does not need <Shift>,
+ *  shift usage shall create a key press of a key code that needs <Shift>.
+ * @param kc1 the key code for the normal usage that is to be pressed directly
+ * @param kc2 the key code for shift usage that results in the wanted key code when <Shift> is pressed
+ */
+#define NNOSHIFT_SSHIFT(kc1,kc2) \
+  if (record->event.pressed) { \
+    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
+      /* press the 1st key without shift */ \
+      register_code(kc1); \
+    } else { \
+      /* Shift is already pressed. Now press kc2 in order to get the actually wanted result */ \
+      register_code(kc2); \
+    } \
+  } else { \
+    unregister_code(kc1); \
+    unregister_code(kc2); \
+  } \
+  return false;
+
+/*
+ * Handling of special keys for the case that:
+ *  normal usage shall create a key press of a key code that needs <Shift>,
+ *  shift usage shall create a key press of a key code that does not need <Shift>.
+ * @param kc1 the key code for the normal usage that results in the wanted key code when <Shift> is pressed
+ * @param kc2 the key code for shift usage that is to be pressed directly
+ */
+#define NSHIFT_SNOSHIFT(kc1,kc2) \
+  if (record->event.pressed) { \
+    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
+      /* Shift key not pressed. In order to get the resulting key pressed, we need to press <Shift>-kc1 */ \
+      register_code(KC_LSHIFT); \
+      register_code(kc1); \
+      unregister_code(KC_LSHIFT); \
+    } else { \
+      /* Shift is pressed but we don't want that. --> turn off shift */ \
+      unregister_code(KC_LSHIFT); \
+      register_code(kc2); \
+      /* Turn on shift again so that lifting the shift key afterwards makes sense */ \
+      register_code(KC_LSHIFT); \
+    } \
+  } else { \
+    unregister_code(kc1); \
+    unregister_code(kc2); \
+  } \
+  return false;
+
+/*
+ * Handling of special keys for the case that:
+ *  normal usage (without <Shift> key) shall create a key press of a key code that needs <Shift>,
+ *  shift usage shall create a key press of a key code that needs <Shift>.
+ * @param kc1 the key code for the normal usage that results in the wanted key code when <Shift> is pressed
+ * @param kc2 the key code for shift usage that results in the wanted key code when <Shift> is pressed
+ */
+#define NSHIFT_SSHIFT(kc1,kc2) \
+  if (record->event.pressed) { \
+    if (!(get_mods() & MOD_BIT(KC_LSHIFT))) { \
+      /* Shift key not pressed. In order to get the resulting key pressed, we need to press <Shift>-kc1 */ \
+      register_code(KC_LSHIFT); \
+      register_code(kc1); \
+      unregister_code(KC_LSHIFT); \
+    } else { \
+      /* Shift is already pressed. Now press kc2 in order to get the actually wanted result */ \
+      register_code(kc2); \
+    } \
+  } else { \
+    unregister_code(kc1); \
+    unregister_code(kc2); \
+  } \
+  return false;
+
 //
 // Callback function that is called whenever a key is pressed.
 // @param keycode the code of the key that was pressed
@@ -220,50 +318,13 @@ the <Shift> key.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case S_ATPIPE: // @ --> | where @ is shift(2) and | is shift(\)
-      if (record->event.pressed) {
-        if (!(get_mods() & MOD_BIT(KC_LSHIFT))) {
-          // 
-          // Shift key not pressed. In order to get @ pressed, we need to press <Shift>-2.
-          register_code(KC_LSHIFT); // turn on shift
-          register_code(KC_2); // press key
-          unregister_code(KC_LSHIFT); // turn off shift
-        } else {
-          // Shift key pressed. In order to get | pressed, we only need to press \ now.
-          register_code(KC_BSLASH);
-        }
-      } else {
-          unregister_code(KC_2);
-          unregister_code(KC_BSLASH);
-      }
-      return false;
+      NSHIFT_SSHIFT(KC_2, KC_BSLASH)
 
     case S_DOTCOL: // . --> : where . is . and : is shift(;)
-      if (record->event.pressed) {
-        if (!(get_mods() & MOD_BIT(KC_LSHIFT))) {
-          register_code(KC_DOT); // press . with no shift
-        } else {
-          register_code(KC_SCLN); // shift is already pressed. Now press ; in order to get :
-        }
-      } else {
-        unregister_code(KC_DOT);
-        unregister_code(KC_SCLN);
-      }
-      return false;
+      NNOSHIFT_SSHIFT(KC_DOT, KC_SCLN)
 
     case S_BRCKET: // [ --> ] where [ is [ and ] is ]
-      if (record->event.pressed) {
-        if (!(get_mods() & MOD_BIT(KC_LSHIFT))) {
-          register_code(KC_LBRC); // [, no shift
-        } else {
-          unregister_code(KC_LSHIFT); // turn off shift
-          register_code(KC_RBRC); // press ]
-          register_code(KC_LSHIFT); // turn on shift again so that lifting the shift key afterwards makes sense 
-        }
-      } else {
-        unregister_code(KC_LBRC);
-        unregister_code(KC_RBRC);
-      }
-      return false;
+      NNOSHIFT_SNOSHIFT(KC_LBRC, KC_RBRC)
       
     default:
       return true;
