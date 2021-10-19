@@ -23,6 +23,25 @@
 */
 
 /*
+ * My own custom key codes. 'S_' stands for symbol.
+ */
+enum custom_keycodes {
+  S_ATPIPE = SAFE_RANGE,   // @ --> |
+  S_ANGLEB,                // < --> >
+  S_CBRCKT,                // { --> }
+  S_PARNTH,                // ( --> )
+  S_BRCKET,                // [ --> ]
+  S_DOTCOL,                // . --> :
+  S_COMSEM,                // , --> ;
+  S_SLSTIL,                // / --> ~
+  S_PRCAMP,                // % --> &
+  S_CIRGRV,                // ^ --> `
+  S_EQUAST,                // = --> *
+  S_USCHAS,                // _ --> #
+  S_DOLPAR                 // $ --> §
+};
+
+/*
  * Partner definitions: Which key needs to be pressed together with <Shift> in order to get the actual key.
  * PK stands for 'partner key'.
  */
