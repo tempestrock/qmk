@@ -29,13 +29,13 @@ enum layers {
   _COLEMAK_PST = 0,
   _DOWN,
   _FUNCTION,
-  _ADJUST
+  _LIGHTS
 };
 
 // Aliases for readability
 #define COLEMAK  DF(_COLEMAK_PST)
 #define FKEYS    MO(_FUNCTION)
-#define ADJUST   MO(_ADJUST)
+#define LIGHTS   MO(_LIGHTS)
 
 #define SPC_DOWN LT(_DOWN, KC_SPC)       // Space when pressed,     _DOWN layer when held down
 #define ESC_CTL  MT(MOD_LCTL, KC_ESC)    // ESC when pressed,       Ctrl when held down
@@ -153,10 +153,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_ADJUST] = LAYOUT(
+    [_LIGHTS] = LAYOUT(
       _______, _______, _______, _______, _______, _______,                                    _______, _______, _______, _______,  _______, _______,
       _______, _______, _______, _______, _______, _______,                                    RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI,  RGB_MOD, _______,
-      _______, _______, _______, COLEMAK, _______, _______,_______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
+      _______, _______, _______, _______, _______, _______,_______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
                                  _______, _______, _______,_______, _______, _______, _______, _______, _______, _______
     ),
 };
@@ -271,8 +271,8 @@ void oled_task_user(void) {
             case _FUNCTION:
                 oled_write_P(PSTR("Function\n"), false);
                 break;
-            case _ADJUST:
-                oled_write_P(PSTR("Adjust\n"), false);
+            case _LIGHTS:
+                oled_write_P(PSTR("Lights\n"), false);
                 break;
             default:
                 oled_write_P(PSTR("Undefined\n"), false);
