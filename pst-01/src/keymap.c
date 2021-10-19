@@ -16,6 +16,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include <keymap_german.h>
 #include "german-symbols.h"
 #include "shift-handling.h"
 #include "tapdance-handling.h"
@@ -54,11 +55,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_COLEMAK_PST] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      FKEYS  ,  KC_Q  ,  KC_W  ,  KC_F  ,  KC_P  ,  KC_B  ,                                               KC_J  ,  KC_L  ,TD_U_UE ,  KC_Y  ,S_PRCAMP,S_CIRGRV,
+      FKEYS  ,  DE_Q  ,  DE_W  ,  DE_F  ,  DE_P  ,  DE_B  ,                                               DE_J  ,  DE_L  ,TD_U_UE ,  DE_Y  ,S_PRCAMP,S_CIRGRV,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     S_ATPIPE,TD_A_AE ,  KC_R  ,TD_S_SZ ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,TD_E_EUR,  KC_I  ,  KC_H  ,S_EQUAST,
+     S_ATPIPE,TD_A_AE ,  DE_R  ,TD_S_SZ ,  DE_T  ,  DE_G  ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL,XXXXXXX ,
+      KC_APP ,  DE_Z  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL,XXXXXXX ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                  KC_SPC , KC_TAB ,KC_LALT ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -69,11 +70,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_DOWN] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______ ,_______ ,  KC_9  ,  KC_8  ,  KC_7  ,S_CBRCKT,                                             KC_DQUO ,KC_HOME , KC_UP  , KC_END ,XXXXXXX , KC_GRV ,
+     _______ ,_______ ,  DE_9  ,  DE_8  ,  DE_7  ,S_CBRCKT,                                             DE_DQUO ,KC_HOME , KC_UP  , KC_END ,XXXXXXX ,S_ACUNON,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     S_ANGLEB,  KC_0  ,  KC_3  ,  KC_2  ,  KC_1  ,S_PARNTH,                                             KC_QUOTE,KC_LEFT ,KC_DOWN ,KC_RGHT ,XXXXXXX ,S_DOLPAR,
+     DE_LABK ,  DE_0  ,  DE_3  ,  DE_2  ,  DE_1  ,S_PARNTH,                                             DE_QUOT ,KC_LEFT ,KC_DOWN ,KC_RGHT ,XXXXXXX ,S_DOLPAR,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______ ,_______ ,  KC_6  ,  KC_5  ,  KC_4  ,S_BRCKET,_______ ,_______ ,         _______ , KC_DEL ,KC_QUES ,KC_MINUS,KC_PLUS ,KC_EXLM ,XXXXXXX ,XXXXXXX ,
+     _______ ,_______ ,  DE_6  ,  DE_5  ,  DE_4  ,S_BRCKET,_______ ,_______ ,         _______ , KC_DEL ,DE_QUES ,DE_MINS, DE_PLUS ,DE_EXLM ,XXXXXXX ,XXXXXXX ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 _______ ,_______ ,_______ ,_______ ,_______ ,         _______ , KC_DEL ,_______ ,_______ ,_______
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -124,44 +125,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case S_ATPIPE: // @ --> |
-      NSHIFT_SSHIFT(PK_AT, PK_PIPE);
-
-    case S_ANGLEB: // < --> >
-      NSHIFT_SSHIFT(PK_LANGLEBR, PK_RANGLEBR);
+      NALTGR_SALTGR(PK_AT, PK_PIPE);
 
     case S_CBRCKT: // { --> }
-      NSHIFT_SSHIFT(PK_LCURLBRKT, PK_RCURLBRKT);
+      NALTGR_SALTGR(PK_LCURLBRKT, PK_RCURLBRKT);
 
     case S_PARNTH: // ( --> )
       NSHIFT_SSHIFT(PK_LPAREN, PK_RPAREN);
 
     case S_BRCKET: // [ --> ]
-      NNOSHIFT_SNOSHIFT(KC_LBRACKET, KC_RBRACKET);
+      NALTGR_SALTGR(PK_LBRACKET, PK_RBRACKET);
       
-    case S_DOTCOL: // . --> :
-      NNOSHIFT_SSHIFT(KC_DOT, PK_COLON);
-
-    case S_COMSEM: // , --> ;
-      NNOSHIFT_SNOSHIFT(KC_COMMA, KC_SCOLON);
-
     case S_SLSTIL: // / --> ~
-      NNOSHIFT_SSHIFT(KC_SLASH, PK_TILDA);
+      NSHIFT_SALTGR(PK_SLASH, PK_TILDA);
 
     case S_PRCAMP: // % --> &
       NSHIFT_SSHIFT(PK_PERCENT, PK_AMPERSAND);
 
     case S_CIRGRV: // ^ --> `
-      NSHIFT_SNOSHIFT(PK_CIRCUMFLEX, KC_GRAVE);
+      NNOSHIFTDEAD_SSHIFTDEAD(DE_CIRC, PK_GRAVE);
+
+    case S_ACUNON: // ´
+      NNOSHIFTDEAD_SNONE(DE_ACUT);
 
     case S_EQUAST: // = --> *
-      NNOSHIFT_SSHIFT(KC_EQUAL, PK_ASTERISK);
-
-    case S_USCHAS: // _ --> #
-      NSHIFT_SSHIFT(PK_UNDERSCORE, PK_HASH);
+      NSHIFT_SSHIFT(PK_EQUAL, PK_ASTERISK);
 
     case S_DOLPAR: // $ --> §
-      // NSHIFT_SNOSHIFT(PK_DOLLAR, DE_paragraph);
-      return true;
+      NSHIFT_SSHIFT(PK_DOLLAR, PK_PARAGRAPH);
+
+    case S_USCHAS: // _ --> #
+      NSHIFT_SNOSHIFT(PK_UNDERSCORE, DE_HASH);
 
     // TODO: Probably also those keys that only have a symbol but no <Shift>-<symbol> will need to get an NNOSHIFT_SNOOP
     //       NSHIFT_SNOOP, respectively.
