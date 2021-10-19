@@ -14,8 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include QMK_KEYBOARD_H
+#include "german-symbols.h"
 #include "shift-handling.h"
+
 
 /* -------------------------------------------------------------------------- */
 /*                              KEYMAP DEFINITION                             */
@@ -49,13 +52,6 @@ enum layers {
 #define TD_U_UE  TD(TD_U_TO_UE)
 #define TD_S_SZ  TD(TD_S_TO_SZ)
 
-// Umlauts:
-#define DE_ae UC(0x00E4)
-#define DE_eur UC(0x20AC)
-#define DE_oe UC(0x00F6)
-#define DE_ue UC(0x00FC)
-#define DE_sz UC(0x00DF)
-
 // My own custom key codes:
 enum custom_keycodes {
   // Special symbol keys:
@@ -70,7 +66,8 @@ enum custom_keycodes {
   S_PRCAMP,                // % --> &
   S_CIRGRV,                // ^ --> `
   S_EQUAST,                // = --> *
-  S_USCHAS                 // _ --> #
+  S_USCHAS,                // _ --> #
+  S_DOLPAR                 // $ --> §
 };
 
 // --------------- Tap Dance definitions ---------------
@@ -106,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
      S_ATPIPE,TD_A_AE ,  KC_R  ,TD_S_SZ ,  KC_T  ,  KC_G  ,                                               KC_M  ,  KC_N  ,TD_E_EUR,  KC_I  ,  KC_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL, KC_DLR ,
+      KC_APP ,  KC_Z  ,  KC_X  ,  KC_C  ,  KC_V  ,  KC_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  KC_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL,XXXXXXX ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                  KC_SPC , KC_TAB ,KC_LALT ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -117,11 +114,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_DOWN] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______ ,_______ ,  KC_9  ,  KC_8  ,  KC_7  ,S_CBRCKT,                                             KC_DQUO ,KC_HOME , KC_UP  , KC_END , KC_NO  , KC_GRV ,
+     _______ ,_______ ,  KC_9  ,  KC_8  ,  KC_7  ,S_CBRCKT,                                             KC_DQUO ,KC_HOME , KC_UP  , KC_END ,XXXXXXX , KC_GRV ,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     S_ANGLEB,  KC_0  ,  KC_3  ,  KC_2  ,  KC_1  ,S_PARNTH,                                             KC_QUOTE,KC_LEFT ,KC_DOWN ,KC_RGHT , KC_NO  , KC_DLR ,
+     S_ANGLEB,  KC_0  ,  KC_3  ,  KC_2  ,  KC_1  ,S_PARNTH,                                             KC_QUOTE,KC_LEFT ,KC_DOWN ,KC_RGHT ,XXXXXXX ,S_DOLPAR,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______ ,_______ ,  KC_6  ,  KC_5  ,  KC_4  ,S_BRCKET,_______ ,_______ ,         _______ , KC_DEL ,KC_QUES ,KC_MINUS,KC_PLUS ,KC_EXLM , KC_NO  , KC_NO  ,
+     _______ ,_______ ,  KC_6  ,  KC_5  ,  KC_4  ,S_BRCKET,_______ ,_______ ,         _______ , KC_DEL ,KC_QUES ,KC_MINUS,KC_PLUS ,KC_EXLM ,XXXXXXX ,XXXXXXX ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 _______ ,_______ ,_______ ,_______ ,_______ ,         _______ , KC_DEL ,_______ ,_______ ,_______
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -211,7 +208,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       NNOSHIFT_SSHIFT(KC_EQUAL, PK_ASTERISK);
 
     case S_USCHAS: // _ --> #
-      NSHIFT_SSHIFT(PK_UNDERSCORE, PK_HASH)
+      NSHIFT_SSHIFT(PK_UNDERSCORE, PK_HASH);
+
+    case S_DOLPAR: // $ --> §
+      // NSHIFT_SNOSHIFT(PK_DOLLAR, DE_paragraph);
+      return true;
 
     // TODO: Probably also those keys that only have a symbol but no <Shift>-<symbol> will need to get an NNOSHIFT_SNOOP
     //       NSHIFT_SNOOP, respectively.

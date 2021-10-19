@@ -19,7 +19,6 @@
 |  ?        | no shift  | shift (/) |
 |  +        | no shift  | shift (=) |
 |  ´        | no shift
-|  $        | no shift  | shift (4) |
 |  paragraph
 */
 
@@ -43,6 +42,7 @@
 #define PK_ASTERISK KC_8           // 8 --> *
 #define PK_UNDERSCORE KC_MINUS     // - --> _
 #define PK_HASH KC_3               // 3 --> #
+#define PK_DOLLAR KC_4             // 4 --> $
 
 /*
  * Handling of special keys for the case that:
