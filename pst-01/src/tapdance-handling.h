@@ -5,29 +5,30 @@
 #ifndef TAPDANCE_HANDLING_H
 #define TAPDANCE_HANDLING_H
 
+#include <keymap_german.h>
+
 // --------------- Tap Dance definitions ---------------
 
 enum {
-    TD_A_TO_AE,
-    TD_E_TO_EUR,
-    TD_O_TO_OE,
-    TD_U_TO_UE,
-    TD_S_TO_SZ
+    A_TO_AE,
+    E_TO_EUR,
+    O_TO_OE,
+    U_TO_UE,
+    S_TO_SZ
 };
 
-#define TD_A_AE  TD(TD_A_TO_AE)
-#define TD_E_EUR TD(TD_E_TO_EUR)
-#define TD_O_OE  TD(TD_O_TO_OE)
-#define TD_U_UE  TD(TD_U_TO_UE)
-#define TD_S_SZ  TD(TD_S_TO_SZ)
+#define TD_A_AE  TD(A_TO_AE)
+#define TD_E_EUR TD(E_TO_EUR)
+#define TD_O_OE  TD(O_TO_OE)
+#define TD_U_UE  TD(U_TO_UE)
+#define TD_S_SZ  TD(S_TO_SZ)
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    // Tap once for Escape, twice for Caps Lock
-    [TD_A_TO_AE] = ACTION_TAP_DANCE_DOUBLE(KC_A, DE_ae),
-    [TD_E_TO_EUR] = ACTION_TAP_DANCE_DOUBLE(KC_E, DE_eur),
-    [TD_O_TO_OE] = ACTION_TAP_DANCE_DOUBLE(KC_O, DE_oe),
-    [TD_U_TO_UE] = ACTION_TAP_DANCE_DOUBLE(KC_U, DE_ue),
-    [TD_S_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_S, DE_sz)
+    [A_TO_AE] = ACTION_TAP_DANCE_DOUBLE(KC_A, DE_ADIA),
+    [E_TO_EUR] = ACTION_TAP_DANCE_DOUBLE(KC_E, DE_EURO),
+    [O_TO_OE] = ACTION_TAP_DANCE_DOUBLE(KC_O, DE_ODIA),
+    [U_TO_UE] = ACTION_TAP_DANCE_DOUBLE(KC_U, DE_UDIA),
+    [S_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_S, DE_SS)
 };
 
 // TODO: Unclear: What happens with capital umlauts like Ä, Ö, Ü, and capital ß?
