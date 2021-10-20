@@ -1,21 +1,19 @@
-/* Copyright 2021 Peter Störmer <mail@peter.stoermer.de>
- * based on the original work of Thomas Baart <thomas@splitkb.com> 2019.
+/* Copyright 2021 Peter Störmer <mail@peter.stoermer.de> based on the work of Thomas Baart <thomas@splitkb.com> 2019.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If you have not, see <http://www.gnu.org/licenses/>.
  */
 
 #include QMK_KEYBOARD_H
+#include "layers.h"
 #include "shift-handling.h"
 #include "tapdance-handling.h"
 #include <keymap_german.h>
@@ -23,18 +21,6 @@
 /* -------------------------------------------------------------------------- */
 /*                              KEYMAP DEFINITION                             */
 /* -------------------------------------------------------------------------- */
-
-// clang-format off
-
-// --------------- Constants ---------------
-enum layers {
-  _COLEMAK_PST = 0,
-  _DOWN,
-  _FUNCTION,
-  _LIGHTS
-};
-
-// clang-format on
 
 /*
  * My own custom key codes. 'S_' stands for symbol.
@@ -85,9 +71,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
      S_ATPIPE,TD_A_AE ,  DE_R  ,TD_S_SZ ,  DE_T  ,  DE_G  ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_D  ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL,XXXXXXX ,
+      KC_APP ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_D  ,TD_SPDWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL,XXXXXXX ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
-                                 KC_SPC , KC_TAB ,KC_LALT ,SPC_DOWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
+                                 KC_SPC , KC_TAB ,KC_LALT ,TD_SPDWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   ),
 
@@ -143,12 +129,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*                                 USER INPUT                                 */
 /* -------------------------------------------------------------------------- */
 
-//
-// Callback function that is called whenever a key is pressed.
-// @param keycode the code of the key that was pressed
-// @param record contains information about the actual press
-// @return true if QMK shall continue to process the key event, false otherwise.
-//
+/**
+ * Callback function that is called whenever a key is pressed or released.
+ * @param keycode the code of the key that was pressed or released.
+ * @param record contains information about the actual press
+ * @return true if QMK shall continue to process the key event, false otherwise. *
+ */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
   case S_ATPIPE: // @ --> |

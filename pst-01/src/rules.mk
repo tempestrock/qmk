@@ -1,3 +1,10 @@
+#
+# rules.mk
+# Rules for making the firmware.
+#
+
+SRC += tapdance-handling.c
+
 AUDIO_ENABLE = no          # Audio output on port C6
 BACKLIGHT_ENABLE = no      # Enable keyboard backlight functionality on B7 by default
 BLUETOOTH_ENABLE = no      # Enable Bluetooth with the Adafruit EZ-Key HID
