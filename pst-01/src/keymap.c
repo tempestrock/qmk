@@ -16,14 +16,15 @@
  */
 
 #include QMK_KEYBOARD_H
-#include <keymap_german.h>
-#include "german-symbols.h"
 #include "shift-handling.h"
 #include "tapdance-handling.h"
+#include <keymap_german.h>
 
 /* -------------------------------------------------------------------------- */
 /*                              KEYMAP DEFINITION                             */
 /* -------------------------------------------------------------------------- */
+
+// clang-format off
 
 // --------------- Constants ---------------
 enum layers {
@@ -33,19 +34,44 @@ enum layers {
   _LIGHTS
 };
 
-// Aliases for readability
+// clang-format on
+
+/*
+ * My own custom key codes. 'S_' stands for symbol.
+ */
+enum custom_keycodes {
+  S_ATPIPE = SAFE_RANGE, // @ --> |
+  S_ANGLEB,              // < --> >
+  S_ACUNON,              // ´
+  S_CBRCKT,              // { --> }
+  S_PARNTH,              // ( --> )
+  S_BRCKET,              // [ --> ]
+  S_DOTCOL,              // . --> :
+  S_COMSEM,              // , --> ;
+  S_SLSTIL,              // / --> ~
+  S_PRCAMP,              // % --> &
+  S_CIRGRV,              // ^ --> `
+  S_EQUAST,              // = --> *
+  S_USCHAS,              // _ --> #
+  S_DOLPAR               // $ --> §
+};
+
+// --------------- Aliases for readability ---------------
+
 #define COLEMAK  DF(_COLEMAK_PST)
 #define FKEYS    MO(_FUNCTION)
 #define LIGHTS   MO(_LIGHTS)
 
-#define SPC_DOWN LT(_DOWN, KC_SPC)       // Space when pressed,     _DOWN layer when held down
-#define ESC_CTL  MT(MOD_LCTL, KC_ESC)    // ESC when pressed,       Ctrl when held down
-#define ENT_CTL  MT(MOD_LCTL, KC_ENT)    // Enter when pressed,     Ctrl when held down
-#define BSP_SHFT RSFT_T(KC_BSPC)         // Backspace when pressed, right Shift when held down
+#define SPC_DOWN LT(_DOWN, KC_SPC)    // Space when pressed,     _DOWN layer when held down
+#define ESC_CTL  MT(MOD_LCTL, KC_ESC) // ESC when pressed,       Ctrl when held down
+#define ENT_CTL  MT(MOD_LCTL, KC_ENT) // Enter when pressed,     Ctrl when held down
+#define BSP_SHFT RSFT_T(KC_BSPC)      // Backspace when pressed, right Shift when held down
 
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
+
+// clang-format off
 
 // --------------- The actual keymap ---------------
 
@@ -111,6 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
+// clang-format on
 
 /* -------------------------------------------------------------------------- */
 /*                                 USER INPUT                                 */
@@ -124,47 +151,48 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case S_ATPIPE: // @ --> |
-      NALTGR_SALTGR(PK_AT, PK_PIPE);
+  case S_ATPIPE: // @ --> |
+    NALTGR_SALTGR(PK_AT, PK_PIPE);
 
-    case S_CBRCKT: // { --> }
-      NALTGR_SALTGR(PK_LCURLBRKT, PK_RCURLBRKT);
+  case S_CBRCKT: // { --> }
+    NALTGR_SALTGR(PK_LCURLBRKT, PK_RCURLBRKT);
 
-    case S_PARNTH: // ( --> )
-      NSHIFT_SSHIFT(PK_LPAREN, PK_RPAREN);
+  case S_PARNTH: // ( --> )
+    NSHIFT_SSHIFT(PK_LPAREN, PK_RPAREN);
 
-    case S_BRCKET: // [ --> ]
-      NALTGR_SALTGR(PK_LBRACKET, PK_RBRACKET);
-      
-    case S_SLSTIL: // / --> ~
-      NSHIFT_SALTGR(PK_SLASH, PK_TILDA);
+  case S_BRCKET: // [ --> ]
+    NALTGR_SALTGR(PK_LBRACKET, PK_RBRACKET);
 
-    case S_PRCAMP: // % --> &
-      NSHIFT_SSHIFT(PK_PERCENT, PK_AMPERSAND);
+  case S_SLSTIL: // / --> ~
+    NSHIFT_SALTGR(PK_SLASH, PK_TILDA);
 
-    case S_CIRGRV: // ^ --> `
-      NNOSHIFTDEAD_SSHIFTDEAD(DE_CIRC, PK_GRAVE);
+  case S_PRCAMP: // % --> &
+    NSHIFT_SSHIFT(PK_PERCENT, PK_AMPERSAND);
 
-    case S_ACUNON: // ´
-      NNOSHIFTDEAD_SNONE(DE_ACUT);
+  case S_CIRGRV: // ^ --> `
+    NNOSHIFTDEAD_SSHIFTDEAD(DE_CIRC, PK_GRAVE);
 
-    case S_EQUAST: // = --> *
-      NSHIFT_SSHIFT(PK_EQUAL, PK_ASTERISK);
+  case S_ACUNON: // ´
+    NNOSHIFTDEAD_SNONE(DE_ACUT);
 
-    case S_DOLPAR: // $ --> §
-      NSHIFT_SSHIFT(PK_DOLLAR, PK_PARAGRAPH);
+  case S_EQUAST: // = --> *
+    NSHIFT_SSHIFT(PK_EQUAL, PK_ASTERISK);
 
-    case S_USCHAS: // _ --> #
-      NSHIFT_SNOSHIFT(PK_UNDERSCORE, DE_HASH);
+  case S_DOLPAR: // $ --> §
+    NSHIFT_SSHIFT(PK_DOLLAR, PK_PARAGRAPH);
+
+  case S_USCHAS: // _ --> #
+    NSHIFT_SNOSHIFT(PK_UNDERSCORE, DE_HASH);
 
     // TODO: Probably also those keys that only have a symbol but no <Shift>-<symbol> will need to get an NNOSHIFT_SNOOP
     //       NSHIFT_SNOOP, respectively.
 
-    default:
-      return true;
+  default:
+    return true;
   }
 }
 
+// clang-format off
 
 /* -------------------------------------------------------------------------- */
 /*                                OLED OUTPUT                                 */
