@@ -231,4 +231,4 @@
   }                                                                                                                    \
   return false;
 
-#endif
+#endif /* SHIFT_HANDLING_H */

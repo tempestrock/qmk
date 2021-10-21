@@ -1,10 +1,10 @@
 /*
- * tapdance-handling.c
+ * tapdance.c
  * The implementation of the tap dance
  */
 
 #include QMK_KEYBOARD_H
-#include "tapdance-handling.h"
+#include "tapdance.h"
 #include "layers.h"
 #include <keymap_german.h>
 

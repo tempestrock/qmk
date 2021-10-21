@@ -15,7 +15,7 @@
 #include QMK_KEYBOARD_H
 #include "layers.h"
 #include "shift-handling.h"
-#include "tapdance-handling.h"
+#include "tapdance.h"
 #include <keymap_german.h>
 
 /*
@@ -62,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_APP ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_G  ,TD_SPDWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL, LIGHTS ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
-                                 KC_SPC , KC_TAB ,KC_LALT ,TD_SPDWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
+                                KC_MUTE , KC_TAB ,KC_LALT ,TD_SPDWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   ),
 

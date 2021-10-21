@@ -1,10 +1,10 @@
 /*
- * tapdance-handling.h
+ * tapdance.h
  * Declarations for the tapdance handling
  */
 
-#ifndef TAPDANCE_HANDLING_H
-#define TAPDANCE_HANDLING_H
+#ifndef TAPDANCE_H
+#define TAPDANCE_H
 
 /**
  * Shortcuts for an easier use in keymaps
@@ -28,4 +28,4 @@ enum {
   SPACE_DOWN
 };
 
-#endif
+#endif /* TAPDANCE_H */
