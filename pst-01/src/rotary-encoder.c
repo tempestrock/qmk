@@ -7,10 +7,20 @@
 #include "layers.h"
 
 /**
+ * Global flag that tracks if <Ctrl>-<Tab> is active at the moment
+ */
+bool is_ctrl_tab_active = false;
+
+/**
+ * Global timer for <Ctrl>-<Tab>
+ */
+uint16_t ctrl_tab_timer = 0;
+
+/**
  * Callback function that is called whenever one of the two rotary knobs was turned.
  * The two encoders control
  *   page up and down,
- *   horizontal scrolling, (tbd)
+ *   tab scrolling (<Ctrl>-<Tab>),
  *   volume up and down, and
  *   brightness up and down.
  * @param index tells us which encoder was turned. May be 0 (left knob) or 1 (right knob).
@@ -29,7 +39,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         tap_code(KC_AUDIO_VOL_DOWN);
       }
     } else {
-      // Down is pressed --> brightness
+      // Down key is pressed simultaneously --> brightness
       if (clockwise) {
         tap_code(KC_BRIGHTNESS_UP);
       } else {
@@ -46,14 +56,33 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         tap_code(KC_PGUP);
       }
     } else {
-      // Down is pressed --> horizontal scrolling
-      // TODO: implement this
+      // Down key is pressed simultaneously --> <Ctrl>-<Tab>
+      if (!is_ctrl_tab_active) {
+        is_ctrl_tab_active = true;
+        register_code(KC_LCTL);
+      }
+      ctrl_tab_timer = timer_read();
       if (clockwise) {
-        tap_code(KC_PGDN);
+        tap_code16(KC_TAB);
       } else {
-        tap_code(KC_PGUP);
+        tap_code16(LSFT(KC_TAB));
       }
     }
   }
   return false;
+}
+
+/**
+ * Callback function that is called veeeery often in order to scan the key matrix.
+ * We check whether or not we have to switch off the possibly active <Ctrl>-<Tab> that is simulated by the right rotary
+ * encoder.
+ */
+void matrix_scan_user(void) {
+  if (is_ctrl_tab_active) {
+    if (timer_elapsed(ctrl_tab_timer) > 1250) {
+      // Time's up without any more action on the encoder => Release <Ctrl>.
+      unregister_code(KC_LCTL);
+      is_ctrl_tab_active = false;
+    }
+  }
 }
