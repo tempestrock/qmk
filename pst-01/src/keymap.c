@@ -31,7 +31,7 @@ enum custom_keycodes {
   S_DOTCOL,              // . --> :
   S_COMSEM,              // , --> ;
   S_SLSTIL,              // / --> ~
-  S_PRCAMP,              // % --> &
+  S_AMPPRC,              // & --> %
   S_CIRGRV,              // ^ --> `
   S_EQUAST,              // = --> *
   S_USCHAS,              // _ --> #
@@ -56,11 +56,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_COLEMAK_PST] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      FKEYS  ,  DE_Q  ,  DE_W  ,  DE_F  ,  DE_P  ,  DE_B  ,                                               DE_J  ,  DE_L  ,TD_U_UE ,  DE_Z  ,S_PRCAMP,S_CIRGRV,
+      FKEYS  ,  DE_Q  ,  DE_W  ,  DE_F  ,  DE_P  ,  DE_B  ,                                               DE_J  ,  DE_L  ,TD_U_UE ,  DE_Z  ,S_AMPPRC,S_CIRGRV,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     S_ATPIPE,TD_A_AE ,  DE_R  ,TD_S_SZ ,  DE_T  ,  DE_G  ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
+     S_ATPIPE,TD_A_AE ,  DE_R  ,TD_S_SZ ,  DE_T  ,  DE_D  ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_D  ,TD_SPDWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL, LIGHTS ,
+      KC_APP ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_G  ,TD_SPDWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL, LIGHTS ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                  KC_SPC , KC_TAB ,KC_LALT ,TD_SPDWN,ESC_CTL ,         ENT_CTL ,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -141,8 +141,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   case S_SLSTIL: // / --> ~
     NSHIFT_SALTGR(PK_SLASH, PK_TILDA);
 
-  case S_PRCAMP: // % --> &
-    NSHIFT_SSHIFT(PK_PERCENT, PK_AMPERSAND);
+  case S_AMPPRC: // & --> %
+    NSHIFT_SSHIFT(PK_AMPERSAND, PK_PERCENT);
 
   case S_CIRGRV: // ^ --> `
     NNOSHIFTDEAD_SSHIFTDEAD(DE_CIRC, PK_GRAVE);
