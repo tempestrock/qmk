@@ -1,6 +1,27 @@
-# Peter's Kyria Keyboard
+# Peter's Kyria Keyboard <!-- omit in toc -->
 
 ![Peter's Keyboard Layout](resources/keymap.png)
+
+---
+
+- [Concept](#concept)
+- [Keymap in Detail](#keymap-in-detail)
+  - [Umlauts, ß, and €](#umlauts-ß-and-)
+  - [Symbols](#symbols)
+  - [Shift](#shift)
+  - [Digits and Function Keys](#digits-and-function-keys)
+  - [Simplification of Some Key Combinations](#simplification-of-some-key-combinations)
+  - [Volume and Brightness](#volume-and-brightness)
+  - [Page Up/Down and Tab Hopping](#page-updown-and-tab-hopping)
+  - [Predefined Messages](#predefined-messages)
+  - [OLEDs](#oleds)
+- [Organization of the Source Code](#organization-of-the-source-code)
+  - [Structure](#structure)
+  - [Optimization](#optimization)
+  - [Building the Firmware](#building-the-firmware)
+- [Painting the Keyboard Layout](#painting-the-keyboard-layout)
+
+---
 
 ## Concept
 
@@ -27,20 +48,20 @@ The <kbd>ß</kbd> is created by double-tapping <kbd>v</kbd>. I decided not to pu
 
 Most of the symbols are either directly reachable (like <kbd>@</kbd>, <kbd>&</kbd>, <kbd>/</kbd>, or <kbd>.</kbd> and <kbd>,</kbd>) or only need either <kbd>Shift</kbd> (like <kbd>|</kbd> or <kbd>~</kbd>) or <kbd>Down</kbd> (like <kbd>'</kbd>, <kbd>"</kbd>, or the opening brackets) in order to be reached. Only a few symbols are left that need both <kbd>Shift</kbd> and <kbd>Down</kbd> but these are almost only the closing brackets which in turn show some symmetry to the opening brackets.
 
-There are no "dead" symbols anymore: <kbd>^</kbd>, <kbd>´</kbd>, and <kbd>`</kbd> are defined to be tapped twice if the user taps them once in order to directly show them. In turn, no "é" and other characters that rely on these symbols are possible to be typed anymore.
+There are no "dead" symbols anymore: <kbd>^</kbd>, <kbd>´</kbd>, and <kbd>`</kbd> are implemented to be automatically tapped twice if the user taps them once in order to directly show them. In turn, no 'é' and other characters that rely on these symbols are possible to be typed anymore.
 
 ### Shift
 
 The symbols that can be reached via <kbd>Shift</kbd> often do not follow any standard. Instead, the combination of "normal" typing and using <kbd>Shift</kbd> is based on what I find helpful.
 
-Implementing this is quite a pain: You have to know and take into account the original combination of "normal" and "shifted" typing. If you e.g. want a key to be available directly when the key is pressed but originally this symbol is reachable via <kbd>Shift</kbd>, then you have to register (= press down) <kbd>Shift</kbd> first, register the "partner" key (= the key that is necessary to be pressed in order to get the actually wanted symbol to appear in combination with <kbd>Shift</kbd>), and then unregister (= release) <kbd>Shift</kbd> again. The same is true for symbols that are reachable via <kbd>AltGr</kbd>.  
-This all lead to an implementation of various macros that handle the different cases of "normal", "shifted", and "altgr"ed typing.
+Implementing this was quite a pain: You have to know and take into account the original combination of "normal" and "shifted" typing. If you e.g. want a key to be available directly when the key is pressed but originally this symbol is reachable via <kbd>Shift</kbd>, then you have to register (= press down) <kbd>Shift</kbd> first, register the "partner" key (= the key that is necessary to be pressed in order to get the actually wanted symbol to appear in combination with <kbd>Shift</kbd>), and then unregister (= release) <kbd>Shift</kbd> again. The same is true for symbols that are reachable via <kbd>AltGr</kbd>.  
+All of this led to an implementation of various macros that handle the different cases of "normal", "shifted", and "altgr"ed typing.
 
 ### Digits and Function Keys
 
 The digits 1, 2, 3, etc. go from right to left because that felt better for me.
 
-The function keys are reachable via the same keys as the digits, e.g. <kbd>F1</kbd> is on the same key as <kbd>1</kbd>. Only the <kbd>Fn</kbd> key needs to be held or tapped before.
+The function keys are reachable via the same keys as the digits, e.g. <kbd>F1</kbd> is on the same key as <kbd>1</kbd>. Only the <kbd>Fn</kbd> key needs to be previously held or tapped.
 
 ### Simplification of Some Key Combinations
 
@@ -63,13 +84,14 @@ In combination with the <kbd>Down</kbd> key the encoder jumps to the next and th
 
 ### Predefined Messages
 
-The leader key in the bottom right corner of the keyboard can be used for a lot of fancy key combinations. Currently, some short messages for the closing greeting at the end of emails are defined for <kbd>Lead</kbd>-<kbd>M</kbd>-<kbd>some digit</kbd> where <kbd>some digit</kbd> is of course again just the respective key like <kbd>T</kbd> for 1, <kbd>S</kbd> for 2, etc. So no holding of the <kbd>Down</kbd> key is necessary.
+The leader key in the bottom right corner of the keyboard can be used for a lot of fancy key combinations. Currently, some short messages for the closing greeting at the end of emails are defined for <kbd>Lead</kbd>-<kbd>M</kbd>-<kbd>some digit</kbd> where <kbd>some digit</kbd> is of course again just the respective key like <kbd>T</kbd> for 1, <kbd>S</kbd> for 2, etc. So no holding of the <kbd>Down</kbd> key is necessary. Also the <kbd>Lead</kbd> key is tapped, not held.
 
 ### OLEDs
-The OLEDs display the current layer at the top of the active layers stack, the Kyria logo and lock status (caps lock, num lock, scroll lock).
-
+To be implemented: The OLEDs display the current layer at the top of the active layers stack, the Kyria logo, and the lock status (caps lock, num lock, scroll lock).
 
 ## Organization of the Source Code
+
+### Structure
 
 The source code is structured in a way that the handling of special functions can be found in different source files:
 
@@ -83,3 +105,21 @@ press and release events for each key.
 
 In order for the `.c` files to be linked into the resulting firmware, they need
 to be mentioned in `rules.mk` in the way `SRC += tapdance.c`.
+
+### Optimization
+
+Memory is a costly good, so optimization during the compilation and the linking is highly recommended. Is is helpful to set the right definitions in the file `rules.mk`. These determine which modules are finally included in the resulting firmware.
+
+### Building the Firmware
+
+There is a small script `bin/build-firmware.sh` available to build the firmware and copy the resulting `.hex` file into the `bin` directory. This way also the latest version of the firmware is stored in the Git repo.
+
+## Painting the Keyboard Layout
+
+I used and still use the [keyboard layout editor](http://www.keyboard-layout-editor.com/) for painting the keyboard layout (see the image at the top of this page). This web-based application has various flaws:
+
+- It is not updated anymore.
+- Thus, it does not use TLS (`http` instead of `https`)!
+- It is buggy when it comes to saving the results.
+
+The definition of the layout is done in a `JSON` file which can be saved (downloaded) and (up)loaded. Unfortunately, the storage of the keymap is buggy. Therefore I need to handle two variants of the keymap. These two - and the resulting image - can be found in the `resources` directory.
