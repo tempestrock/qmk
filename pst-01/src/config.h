@@ -16,8 +16,14 @@
 
 #pragma once
 
+// Definitions for tap dance
 #define TAPPING_TERM 175
 
+// Definitions for the leader key
+#define LEADER_PER_KEY_TIMING // Define that the leader key timing is measured per key, not for the whole sequence.
+#define LEADER_TIMEOUT 300
+
+// Definitions for the lighting
 #ifdef RGBLIGHT_ENABLE
 #    define RGBLIGHT_ANIMATIONS
 #    define RGBLIGHT_HUE_STEP  8

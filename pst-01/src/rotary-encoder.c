@@ -73,11 +73,11 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 }
 
 /**
- * Callback function that is called veeeery often in order to scan the key matrix.
+ * Callback function that is called as part of the global matrix_scan_user function.
  * We check whether or not we have to switch off the possibly active <Ctrl>-<Tab> that is simulated by the right rotary
  * encoder.
  */
-void matrix_scan_user(void) {
+void matrix_scan_user_rotary_encoder(void) {
   if (is_ctrl_tab_active) {
     if (timer_elapsed(ctrl_tab_timer) > 1250) {
       // Time's up without any more action on the encoder => Release <Ctrl>.
