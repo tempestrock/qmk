@@ -45,7 +45,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [E_TO_EUR] = ACTION_TAP_DANCE_DOUBLE(KC_E, DE_EURO),
     [O_TO_OE] = ACTION_TAP_DANCE_DOUBLE(KC_O, DE_ODIA),
     [U_TO_UE] = ACTION_TAP_DANCE_DOUBLE(KC_U, DE_UDIA),
-    [S_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_S, DE_SS),
+    [V_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_V, DE_SS),
     [SPACE_DOWN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_spacedown_finished, td_spacedown_reset)};
 
 // TODO: Unclear: What happens with capital umlauts like Ä, Ö, Ü, and capital ß?
