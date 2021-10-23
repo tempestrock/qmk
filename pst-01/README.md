@@ -19,6 +19,7 @@
   - [Structure](#structure)
   - [Optimization](#optimization)
   - [Building the Firmware](#building-the-firmware)
+  - [IDE](#ide)
 - [Painting the Keyboard Layout](#painting-the-keyboard-layout)
 
 ---
@@ -113,6 +114,14 @@ Memory is a costly good, so optimization during the compilation and the linking 
 ### Building the Firmware
 
 There is a small script `bin/build-firmware.sh` available to build the firmware and copy the resulting `.hex` file into the `bin` directory. This way also the latest version of the firmware is stored in the Git repo.
+
+### IDE
+
+I use VSCode in combination with clang (version 12) to write and format the C code. The clang settings are as follows:
+
+```
+{ BasedOnStyle: LLVM, UseTab: Never, IndentWidth: 2, TabWidth: 2, BreakBeforeBraces: Attach, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 120, AccessModifierOffset: -4, NamespaceIndentation: All, FixNamespaceComments: false, AlignConsecutiveMacros: AcrossEmptyLines }
+```
 
 ## Painting the Keyboard Layout
 

@@ -171,7 +171,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 /**
  * Callback function that is called veeeery often in order to scan the key matrix.
- * Calls the matrix scan user functions of the various areas.
+ * Calls the matrix scan functions of the sub areas.
  */
 void matrix_scan_user(void) {
   matrix_scan_user_rotary_encoder();
