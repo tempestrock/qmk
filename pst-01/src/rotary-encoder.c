@@ -4,6 +4,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include "rotary-encoder.h"
 #include "layers.h"
 
 /**

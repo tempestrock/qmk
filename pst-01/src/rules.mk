@@ -3,6 +3,7 @@
 # Rules for making the firmware.
 #
 
+SRC += leader-key.c
 SRC += oled.c
 SRC += rotary-encoder.c
 SRC += tapdance.c
@@ -17,6 +18,7 @@ ENCODER_ENABLE = yes       # Enables the use of one or more encoders
 EXTRAKEY_ENABLE = no       # Audio control and System control
 FAUXCLICKY_ENABLE = no     # Use buzzer to emulate clicky switches
 HD44780_ENABLE = no        # Enable support for HD44780 based LCDs
+LEADER_ENABLE = yes        # Enable leader key
 MIDI_ENABLE = no           # MIDI support
 MOUSEKEY_ENABLE = no       # Mouse keys - save some space by disabling this flag
 NKRO_ENABLE = no           # USB Nkey Rollover
@@ -25,7 +27,8 @@ OLED_DRIVER_ENABLE = yes   # Enables the use of OLED displays
 OLED_ENABLE = no					 # OLED enabling - save a lot of space by disabling this flag
 RGBLIGHT_ENABLE = yes      # Enable keyboard RGB underglow
 SLEEP_LED_ENABLE = no
-SPLIT_TRANSPORT = mirror
+SPLIT_KEYBOARD = yes
+# SPLIT_TRANSPORT = mirror
 SWAP_HANDS_ENABLE = no     # Allow swapping hands of keyboard
 TAP_DANCE_ENABLE = yes     # Allow tap dancing
 UNICODE_ENABLE = yes       # Unicode for Umlauts

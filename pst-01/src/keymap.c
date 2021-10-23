@@ -14,6 +14,7 @@
 
 #include QMK_KEYBOARD_H
 #include "layers.h"
+#include "leader-key.h"
 #include "rotary-encoder.h"
 #include "shift-handling.h"
 #include "tapdance.h"
@@ -174,4 +175,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
  */
 void matrix_scan_user(void) {
   matrix_scan_user_rotary_encoder();
+  matrix_scan_user_leader_key();
 }
