@@ -34,14 +34,16 @@ The basic concept of the design of this keymap is:
  - to be as free as possible and not stick to any conventions
 
 The layers of this keymap are the following:
-1. Base layer (Colemak-PST which is Colemak-DH with some personal key-swaps)
-2. "Down" layer which handles all number keys and the rest of the symbols
+1. Base layer (Colemak-PST which is Colemak-DH with some personal key swaps)
+2. "Down" layer which handles the digit keys and the rest of the symbols
 3. Function layer which takes care of F1 through F12
 4. Lights layer handling the cool underglow LEDs
 
 ## Keymap in Detail
 
 ### Umlauts, ß, and €
+
+Throughout the implementation of the keymap we assume that the attached PC has the German keyboard layout defined.
 
 Umlauts can be found by double-tapping the 'normal' keys <kbd>a</kbd>, <kbd>o</kbd>, and <kbd>u</kbd>, respectively. The € sign is under the <kbd>e</kbd>.  
 The <kbd>ß</kbd> is created by double-tapping <kbd>v</kbd>. I decided not to put it under the <kbd>s</kbd> key in order to still be able to tap <kbd>ss</kbd> in a fast manner.
@@ -54,10 +56,10 @@ There are no "dead" symbols anymore: <kbd>^</kbd>, <kbd>´</kbd>, and <kbd>`</kb
 
 ### Shift
 
-The symbols that can be reached via <kbd>Shift</kbd> often do not follow any standard. Instead, the combination of "normal" typing and using <kbd>Shift</kbd> is based on what I find helpful.
+The combination of symbols (normal, "shifted", and "downed" typing) often does not follow any standard. Instead it is based on what I find useful for an efficient typing.
 
-Implementing this was quite a pain: You have to know and take into account the original combination of "normal" and "shifted" typing. If you e.g. want a key to be available directly when the key is pressed but originally this symbol is reachable via <kbd>Shift</kbd>, then you have to register (= press down) <kbd>Shift</kbd> first, register the "partner" key (= the key that is necessary to be pressed in order to get the actually wanted symbol to appear in combination with <kbd>Shift</kbd>), and then unregister (= release) <kbd>Shift</kbd> again. The same is true for symbols that are reachable via <kbd>AltGr</kbd>.  
-All of this led to an implementation of various macros that handle the different cases of "normal", "shifted", and "altgr"ed typing.
+Implementing this was quite a pain: You have to know and take into account the original combination of normal, "shifted", and "altgr"ed typing. If you e.g. want a key to be available directly when the key is pressed but originally this symbol is reachable via <kbd>Shift</kbd>, then you have to register (= press down) <kbd>Shift</kbd> first, register the "partner" key (= the key that is necessary to be pressed in order to get the actually wanted symbol to appear in combination with <kbd>Shift</kbd>), and then unregister (= release) <kbd>Shift</kbd> again. The same is true for symbols that are reachable via <kbd>AltGr</kbd>.  
+All of this led to an implementation of various macros that handle the different cases of "normal", "shifted", and "altgr"ed typing. (To be found in `shift-handling.h`.)
 
 ### Digits and Function Keys
 
@@ -70,10 +72,11 @@ The function keys are reachable via the same keys as the digits, e.g. <kbd>F1</k
 Due to the fact that I use some key combinations very often, I paid special attention to their location:
 
 - <kbd>Ctrl</kbd>-<kbd>x</kbd>, <kbd>Ctrl</kbd>-<kbd>c</kbd>, and <kbd>Ctrl</kbd>-<kbd>v</kbd> lie directly next to each other, and the <kbd>Ctrl</kbd> key is also on the left hand keymap in order to be able to access the key combination with only one hand.
-- <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>something</kbd> is easily reachable by tapping the right <kbd>Ctrl</kbd> key twice.
+- <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>something</kbd> is easily reachable by tapping and holding the right <kbd>Ctrl</kbd> key twice. (Implemented as tap dance.)
+- Similarly, <kbd>Ctrl</kbd>-<kbd>Alt</kbd>-<kbd>something</kbd> is easily reachable by tapping and holding the right <kbd>Ctrl</kbd> key three times. (Implemented as tap dance.)
 - <kbd>Alt</kbd> and <kbd>Tab</kbd> are very close to each other in order to switch the application windows fast.
 - <kbd>Right Ctrl</kbd> is available to get out of the Linux virtual machine easily.
-- <kbd>Alt</kbd>-<kbd>some digit</kbd> to directly select a browser tab or a file in VSCode can be reached via double-tapping and holding the <kbd>Down</kbd> key and typing the respective digit key.
+- <kbd>Alt</kbd>-<kbd>some digit</kbd> to directly select a browser tab or a file in VSCode can be reached via double-tapping and holding the <kbd>Down</kbd> key and typing the respective digit key. (Implemented as tap dance.)
 - etc.
 
 ### Volume and Brightness
@@ -126,8 +129,8 @@ I use VSCode in combination with clang (version 12) to write and format the C co
 
 ### Conventions
 
-We use the long keycode names (like <kbd>KC_ENTER</kbd> and <kbd>KC_LSHIFT</tbd>) whenever we can. Only in the matrix definitions of the
-keymaps we use the short names (like <kbd>KC_ENT</kbd> and <kbd>KC_LSFT</tbd>) because they fit better into the keyboard optics.
+We use the long keycode names (like <kbd>KC_ENTER</kbd> and <kbd>KC_LSHIFT</kbd>) whenever we can. Only in the matrix definition of the
+keymap we use the short names (like <kbd>KC_ENT</kbd> and <kbd>KC_LSFT</kbd>) because they fit better into the keyboard optics.
 
 ## Painting the Keyboard Layout
 
