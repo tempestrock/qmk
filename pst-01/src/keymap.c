@@ -40,15 +40,15 @@ enum custom_keycodes {
   S_DOLPAR               // $ --> §
 };
 
-// clang-format off
-
 // --------------- Aliases for readability ---------------
 
-#define FKEYS    MO(_FUNCTION)        // activate the function keys only as long the FN key is pressed
+#define FKEYS    OSL(_FUNCTION)       // activate the function keys as one shot or while the Fn key is held down
 #define LIGHTS   TG(_LIGHTS)          // toggle the lights layer on and off
 #define ESC_CTL  MT(MOD_LCTL, KC_ESC) // ESC when pressed,       Ctrl when held down
 #define ENT_CTL  MT(MOD_LCTL, KC_ENT) // Enter when pressed,     Ctrl when held down
 #define BSP_SHFT RSFT_T(KC_BSPC)      // Backspace when pressed, right Shift when held down
+
+// clang-format off
 
 // --------------- The actual keymap ---------------
 
