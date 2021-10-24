@@ -15,6 +15,7 @@
 #define TD_U_UE  TD(U_TO_UE)
 #define TD_V_SZ  TD(V_TO_SZ)
 #define TD_SPDWN TD(SPACE_DOWN)
+#define TD_ENCTL TD(ENTER_CTRL)
 
 /**
  * Indexes for the tap_dance_actions array
@@ -25,7 +26,8 @@ enum {
   O_TO_OE,
   U_TO_UE,
   V_TO_SZ,
-  SPACE_DOWN
+  SPACE_DOWN,
+  ENTER_CTRL
 };
 
 #endif /* TAPDANCE_H */

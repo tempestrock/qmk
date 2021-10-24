@@ -20,6 +20,7 @@
   - [Optimization](#optimization)
   - [Building the Firmware](#building-the-firmware)
   - [IDE](#ide)
+  - [Conventions](#conventions)
 - [Painting the Keyboard Layout](#painting-the-keyboard-layout)
 
 ---
@@ -96,8 +97,8 @@ To be implemented: The OLEDs display the current layer at the top of the active 
 
 The source code is structured in a way that the handling of special functions can be found in different source files:
 
-- `keymap.c`: The main file that includes the other `.h` files and contains the definition of the keymap layers. It also defines the `process_record_user()` function which handles the
-press and release events for each key.
+- `keymap.c`: The main file that includes the other `.h` files and contains the definition of the keymap layers. It also defines the `process_record_user()` function which handles the press and release events for each key and the global function
+`matrix_scan_user()` but only as the hull to call the respective functions of the sub areas.
 - `leader-key.c`: Handling of the 'leader key'.
 - `oled.c`: Definition of messages on the displays (not yet implemented).
 - `rotary-encoder.c`: Everything that has to do with the rotary knob.
@@ -122,6 +123,11 @@ I use VSCode in combination with clang (version 12) to write and format the C co
 ```
 { BasedOnStyle: LLVM, UseTab: Never, IndentWidth: 2, TabWidth: 2, BreakBeforeBraces: Attach, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 120, AccessModifierOffset: -4, NamespaceIndentation: All, FixNamespaceComments: false, AlignConsecutiveMacros: AcrossEmptyLines }
 ```
+
+### Conventions
+
+We use the long keycode names (like <kbd>KC_ENTER</kbd> and <kbd>KC_LSHIFT</tbd>) whenever we can. Only in the matrix definitions of the
+keymaps we use the short names (like <kbd>KC_ENT</kbd> and <kbd>KC_LSFT</tbd>) because they fit better into the keyboard optics.
 
 ## Painting the Keyboard Layout
 

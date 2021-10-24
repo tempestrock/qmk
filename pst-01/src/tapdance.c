@@ -36,6 +36,8 @@ typedef struct {
  */
 void td_spacedown_finished(qk_tap_dance_state_t *state, void *user_data);
 void td_spacedown_reset(qk_tap_dance_state_t *state, void *user_data);
+void td_enterctrl_finished(qk_tap_dance_state_t *state, void *user_data);
+void td_enterctrl_reset(qk_tap_dance_state_t *state, void *user_data);
 
 /**
  * The array of all tap dance actions.
@@ -46,11 +48,14 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [O_TO_OE] = ACTION_TAP_DANCE_DOUBLE(KC_O, DE_ODIA),
     [U_TO_UE] = ACTION_TAP_DANCE_DOUBLE(KC_U, DE_UDIA),
     [V_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_V, DE_SS),
-    [SPACE_DOWN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_spacedown_finished, td_spacedown_reset)};
+    [SPACE_DOWN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_spacedown_finished, td_spacedown_reset), // Space --> Down
+    [ENTER_CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_enterctrl_finished, td_enterctrl_reset)  // Enter --> Ctrl
+};
 
 // TODO: Unclear: What happens with capital umlauts like Ä, Ö, Ü, and capital ß?
 
 /**
+ * This function is called for all tap dance keys.
  * Provide the current tap dance state depending on what has happened so far.
  * Interrupted state: If the state of a tap dance is "interrupted", that means that another key has been hit under the
  * tapping term. This is typically an indication that you are trying to "tap" the key.
@@ -103,7 +108,10 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
 /**
  * A global instance of type 'td_tap_t' for the 'space-down' tap dance.
  */
-static td_tap_t space_tap_state = {.is_press_action = true, .state = TD_NONE};
+static td_tap_t space_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE // the current state
+};
 
 /**
  * Callback function that is called when the space-down tap dance is over.
@@ -132,7 +140,6 @@ void td_spacedown_finished(qk_tap_dance_state_t *state, void *user_data) {
     tap_code(KC_SPACE);
     register_code(KC_SPACE);
     break;
-
   default:
     break;
   }
@@ -159,8 +166,74 @@ void td_spacedown_reset(qk_tap_dance_state_t *state, void *user_data) {
     unregister_code(KC_LALT);
   case TD_DOUBLE_SINGLE_TAP:
     unregister_code(KC_SPACE);
-  default:
+  default: // TODO: Check if in the default case all previously registered keys need to be unregistered
     break;
   }
   space_tap_state.state = TD_NONE;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                        TAP DANCE FOR ENTER-CTRL                            */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * A global instance of type 'td_tap_t' for the 'enter-ctrl' tap dance.
+ */
+static td_tap_t enter_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE // the current state
+};
+
+/**
+ * Callback function that is called when the enter-ctrl tap dance is over.
+ * Handles the respective keystroke depending on the current tap state.
+ * @param state the current state of the tap dance
+ * @param user_data unused
+ **/
+void td_enterctrl_finished(qk_tap_dance_state_t *state, void *user_data) {
+  enter_tap_state.state = cur_dance(state);
+  switch (enter_tap_state.state) {
+  case TD_SINGLE_TAP:
+    register_code(KC_ENTER);
+    break;
+  case TD_SINGLE_HOLD:
+    register_code(KC_LCTRL);
+    break;
+  case TD_DOUBLE_HOLD:
+    register_code(KC_LCTRL);
+    register_code(KC_LSHIFT);
+    break;
+  case TD_TRIPLE_HOLD:
+    register_code(KC_LCTRL);
+    register_code(KC_LALT);
+    break;
+  default:
+    break;
+  }
+}
+
+/**
+ * Callback function that is called to reset everything after the enter-ctrl tap dance.
+ * @param state the current state of the tap dance
+ * @param user_data unused
+ **/
+void td_enterctrl_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch (enter_tap_state.state) {
+  case TD_SINGLE_TAP:
+    unregister_code(KC_ENTER);
+    break;
+  case TD_SINGLE_HOLD:
+    unregister_code(KC_LCTRL);
+    break;
+  case TD_DOUBLE_HOLD:
+    unregister_code(KC_LCTRL);
+    unregister_code(KC_LSHIFT);
+    break;
+  case TD_TRIPLE_HOLD:
+    unregister_code(KC_LCTRL);
+    unregister_code(KC_LALT);
+  default: // TODO: Check if in the default case all previously registered keys need to be unregistered
+    break;
+  }
+  enter_tap_state.state = TD_NONE;
 }
