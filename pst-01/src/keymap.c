@@ -20,6 +20,10 @@
 #include "tapdance.h"
 #include <keymap_german.h>
 
+#ifdef CONSOLE_ENABLE
+#include "print.h" // Debug output
+#endif
+
 /*
  * My own custom key codes. 'S_' stands for symbol.
  */
@@ -127,6 +131,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * @return true if QMK shall continue to process the key event, false otherwise. *
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+#ifdef CONSOLE_ENABLE
+  // Debug
+  uprintf("key event: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode,
+          record->event.key.col, record->event.key.row, record->event.pressed, record->event.time,
+          record->tap.interrupted, record->tap.count);
+#endif
+
   switch (keycode) {
   case S_ATPIPE: // @ --> |
     NALTGR_SALTGR(PK_AT, PK_PIPE);
