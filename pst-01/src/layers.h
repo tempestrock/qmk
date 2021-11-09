@@ -1,6 +1,6 @@
 /*
  * layers.h
- * Declaration of the available keyman layers
+ * Declaration of the available keymap layers
  */
 
 #ifndef LAYERS_H

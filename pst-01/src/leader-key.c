@@ -5,6 +5,7 @@
 
 #include QMK_KEYBOARD_H
 #include "leader-key.h"
+#include "layers.h"
 
 LEADER_EXTERNS(); // Declaration of external functions
 
@@ -18,6 +19,11 @@ void matrix_scan_user_leader_key(void) {
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
+
+    SEQ_ONE_KEY(KC_L) {
+      // Toggle the "Lights" layer on and off
+      layer_invert(_LIGHTS);
+    }
 
     SEQ_TWO_KEYS(KC_M, KC_T) {
       // Message 1
