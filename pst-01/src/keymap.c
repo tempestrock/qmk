@@ -46,11 +46,10 @@ enum custom_keycodes {
 
 // --------------- Aliases for readability ---------------
 
-#define FKEYS    OSL(_FUNCTION)       // activate the function keys as one shot or while the Fn key is held down
-#define LIGHTS   TG(_LIGHTS)          // toggle the lights layer on and off
-#define ESC_CTL  MT(MOD_LCTL, KC_ESC) // ESC when pressed,       Ctrl when held down
-#define ENT_CTL  MT(MOD_LCTL, KC_ENT) // Enter when pressed,     Ctrl when held down
-#define BSP_SHFT RSFT_T(KC_BSPC)      // Backspace when pressed, right Shift when held down
+#define FKEYS    OSL(_FUNCTION)  // activate the function keys as one shot or while the Fn key is held down
+#define LIGHTS   TG(_LIGHTS)     // toggle the lights layer on and off
+#define TAB_CTL  CTL_T(KC_TAB)   // TAB when pressed,       Ctrl when held down
+#define BSP_SHFT RSFT_T(KC_BSPC) // Backspace when pressed, right Shift when held down
 
 // clang-format off
 
@@ -64,11 +63,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
       FKEYS  ,  DE_Q  ,  DE_W  ,  DE_F  ,  DE_P  ,  DE_B  ,                                               DE_J  ,  DE_L  ,TD_U_UE ,  DE_Z  ,S_AMPPRC,S_CIRGRV,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     S_ATPIPE,  DE_G  ,  DE_R  ,  DE_S  ,  DE_T  ,TD_A_AE ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
+     S_ATPIPE,TD_A_AE ,  DE_R  ,  DE_S  ,  DE_T  ,  DE_D  ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  DE_Y  ,  DE_X  ,  DE_C  ,TD_V_SZ ,  DE_D  ,TD_SPDWN,ESC_CTL ,         TD_ENCTL,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL,KC_LEAD ,
+      KC_APP ,  DE_Y  ,  DE_X  ,  DE_C  ,TD_V_SZ ,  DE_G  ,TD_SPDWN,TAB_CTL ,         TD_ENCTL,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL,KC_LEAD ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
-                                KC_MUTE , KC_TAB ,KC_LALT ,TD_SPDWN,ESC_CTL ,         TD_ENCTL,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
+                                KC_MUTE , KC_ESC ,KC_LALT ,TD_SPDWN,TAB_CTL ,         TD_ENCTL,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   ),
 
@@ -81,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
      DE_LABK ,  DE_0  ,  DE_3  ,  DE_2  ,  DE_1  ,S_PARNTH,                                             DE_QUOT ,KC_LEFT ,KC_DOWN ,KC_RGHT ,XXXXXXX ,S_DOLPAR,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______ ,_______ ,  DE_6  ,  DE_5  ,  DE_4  ,S_BRCKET,_______ ,_______ ,         _______ , KC_DEL ,DE_QUES ,DE_MINS, DE_PLUS ,DE_EXLM ,KC_BSPC ,_______ ,
+     _______ ,_______ ,  DE_6  ,  DE_5  ,  DE_4  ,S_BRCKET,_______ ,_______ ,         _______ , KC_DEL ,DE_QUES ,DE_MINS, DE_PLUS ,DE_EXLM ,KC_BSLS ,_______ ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 _______ ,_______ ,_______ ,_______ ,_______ ,         _______ , KC_DEL ,_______ ,_______ ,_______
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
