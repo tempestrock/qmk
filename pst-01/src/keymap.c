@@ -34,8 +34,6 @@ enum custom_keycodes {
   S_CBRCKT,              // { --> }
   S_PARNTH,              // ( --> )
   S_BRCKET,              // [ --> ]
-  S_DOTCOL,              // . --> :
-  S_COMSEM,              // , --> ;
   S_SLSTIL,              // / --> ~
   S_AMPPRC,              // & --> %
   S_CIRGRV,              // ^ --> `
@@ -50,6 +48,8 @@ enum custom_keycodes {
 #define LIGHTS   TG(_LIGHTS)     // toggle the lights layer on and off
 #define TAB_CTL  CTL_T(KC_TAB)   // TAB when pressed,       Ctrl when held down
 #define BSP_SHFT RSFT_T(KC_BSPC) // Backspace when pressed, right Shift when held down
+#define SPC_DOWN LT(_DOWN, KC_SPACE) // Space when pressed, layer 'down' when held down
+#define ENT_CTL  CTL_T(KC_ENT)   // Enter when pressed,     Ctrl when held down
 
 // clang-format off
 
@@ -65,9 +65,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
      S_ATPIPE,TD_A_AE ,  DE_R  ,  DE_S  ,  DE_T  ,  DE_D  ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_APP ,  DE_Y  ,  DE_X  ,  DE_C  ,TD_V_SZ ,  DE_G  ,TD_SPDWN,TAB_CTL ,         TD_ENCTL,BSP_SHFT,  DE_K  ,TD_O_OE ,S_DOTCOL,S_COMSEM,S_SLSTIL,KC_LEAD ,
+     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,TD_V_SZ ,  DE_G  ,XXXXXXX ,XXXXXXX ,         XXXXXXX, XXXXXXX,   DE_K  ,TD_O_OE , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
-                                KC_MUTE , KC_ESC ,KC_LALT ,TD_SPDWN,TAB_CTL ,         TD_ENCTL,BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
+                                KC_MUTE , KC_ESC ,KC_LALT ,SPC_DOWN,TAB_CTL ,         ENT_CTL, BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   ),
 
@@ -133,9 +133,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef CONSOLE_ENABLE
   // Debug
-  uprintf("key event: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode,
-          record->event.key.col, record->event.key.row, record->event.pressed, record->event.time,
-          record->tap.interrupted, record->tap.count);
+  // uprintf("key event: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode,
+  //         record->event.key.col, record->event.key.row, record->event.pressed, record->event.time,
+  //         record->tap.interrupted, record->tap.count);
 #endif
 
   switch (keycode) {

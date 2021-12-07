@@ -52,8 +52,6 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [ENTER_CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_enterctrl_finished, td_enterctrl_reset)  // Enter --> Ctrl
 };
 
-// TODO: Unclear: What happens with capital umlauts like Ä, Ö, Ü, and capital ß?
-
 /**
  * This function is called for all tap dance keys.
  * Provide the current tap dance state depending on what has happened so far.
