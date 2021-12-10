@@ -50,6 +50,7 @@ enum custom_keycodes {
 #define BSP_SHFT RSFT_T(KC_BSPC) // Backspace when pressed, right Shift when held down
 #define SPC_DOWN LT(_DOWN, KC_SPACE) // Space when pressed, layer 'down' when held down
 #define ENT_CTL  CTL_T(KC_ENT)   // Enter when pressed,     Ctrl when held down
+#define ALT_DOWN LM(_DOWN, MOD_LALT) // Alt-Down
 
 // clang-format off
 
@@ -65,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
      S_ATPIPE,TD_A_AE ,  DE_R  ,  DE_S  ,  DE_T  ,  DE_D  ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,TD_V_SZ ,  DE_G  ,XXXXXXX ,XXXXXXX ,         XXXXXXX, XXXXXXX,   DE_K  ,TD_O_OE , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
+     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,TD_V_SZ ,  DE_G  ,ALT_DOWN,XXXXXXX ,         XXXXXXX, XXXXXXX,   DE_K  ,TD_O_OE , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 KC_MUTE , KC_ESC ,KC_LALT ,SPC_DOWN,TAB_CTL ,         ENT_CTL, BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
