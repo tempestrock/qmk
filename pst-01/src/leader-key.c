@@ -46,6 +46,24 @@ void matrix_scan_user_leader_key(void) {
       tap_code(DE_SS);
     }
 
+    // Comment out a line in VSCode
+    SEQ_ONE_KEY(KC_P) {
+      register_code(KC_LCTRL);
+      register_code(KC_LSHIFT);
+      tap_code(KC_7);
+      unregister_code(KC_LSHIFT);
+      unregister_code(KC_LCTRL);
+    }
+
+    // Comment out a block in VSCode
+    SEQ_ONE_KEY(KC_F) {
+      register_code(KC_LCTRL);
+      register_code(KC_LSHIFT);
+      tap_code(KC_8);
+      unregister_code(KC_LSHIFT);
+      unregister_code(KC_LCTRL);
+    }
+
     // Minimize Window in KDE
     SEQ_ONE_KEY(KC_DOT) {
       register_code(KC_LALT);
