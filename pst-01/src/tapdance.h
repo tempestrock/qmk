@@ -25,9 +25,7 @@ enum {
   E_TO_EUR,
   O_TO_OE,
   U_TO_UE,
-  V_TO_SZ,
-  SPACE_DOWN,
-  ENTER_CTRL
+  V_TO_SZ
 };
 
 #endif /* TAPDANCE_H */

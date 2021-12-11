@@ -47,11 +47,13 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [E_TO_EUR] = ACTION_TAP_DANCE_DOUBLE(KC_E, DE_EURO),
     [O_TO_OE] = ACTION_TAP_DANCE_DOUBLE(KC_O, DE_ODIA),
     [U_TO_UE] = ACTION_TAP_DANCE_DOUBLE(KC_U, DE_UDIA),
-    [V_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_V, DE_SS),
-    [SPACE_DOWN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_spacedown_finished, td_spacedown_reset), // Space --> Down
-    [ENTER_CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_enterctrl_finished, td_enterctrl_reset)  // Enter --> Ctrl
+    [V_TO_SZ] = ACTION_TAP_DANCE_DOUBLE(KC_V, DE_SS)
+    // [SPACE_DOWN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_spacedown_finished, td_spacedown_reset), // Space --> Down
+    // [ENTER_CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_enterctrl_finished, td_enterctrl_reset)  // Enter --> Ctrl
 };
 
+
+#ifdef DISABLE_FOR_NOW
 /**
  * This function is called for all tap dance keys.
  * Provide the current tap dance state depending on what has happened so far.
@@ -235,3 +237,5 @@ void td_enterctrl_reset(qk_tap_dance_state_t *state, void *user_data) {
   }
   enter_tap_state.state = TD_NONE;
 }
+
+#endif
