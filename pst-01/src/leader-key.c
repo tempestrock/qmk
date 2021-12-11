@@ -21,13 +21,47 @@ void matrix_scan_user_leader_key(void) {
     leading = false;
     leader_end();
 
+    // Ä
+    SEQ_ONE_KEY(KC_A) {
+      tap_code(DE_ADIA);
+    }
+
+    // €
+//    SEQ_ONE_KEY(KC_E) {
+  //    tap_code(DE_EURO);
+    // }
+
+    // Ö
+    SEQ_ONE_KEY(KC_O) {
+      tap_code(DE_ODIA);
+    }
+
+    // Ü
+    SEQ_ONE_KEY(KC_U) {
+      tap_code(DE_UDIA);
+    }
+
+    // ß
+    SEQ_ONE_KEY(KC_S) {
+      tap_code(DE_SS);
+    }
+
+    // Minimize Window in KDE
+    SEQ_ONE_KEY(KC_DOT) {
+      register_code(KC_LALT);
+      tap_code(KC_F3);
+      unregister_code(KC_LALT);
+      tap_code(KC_N);
+    }
+
+
+    // Toggle the "Lights" layer on and off
     SEQ_ONE_KEY(KC_L) {
-      // Toggle the "Lights" layer on and off
       layer_invert(_LIGHTS);
     }
 
+    // Message 1
     SEQ_TWO_KEYS(KC_M, KC_T) {
-      // Message 1
       SEND_STRING("Sch");
       tap_code(DE_ODIA);
       SEND_STRING("ne Gr");

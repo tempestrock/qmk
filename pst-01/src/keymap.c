@@ -17,7 +17,7 @@
 #include "leader-key.h"
 #include "rotary-encoder.h"
 #include "shift-handling.h"
-#include "tapdance.h"
+// #include "tapdance.h"
 #include <keymap_german.h>
 
 #ifdef CONSOLE_ENABLE
@@ -63,11 +63,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_COLEMAK_PST] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      FKEYS  ,  DE_Q  ,  DE_W  ,  DE_F  ,  DE_P  ,  DE_B  ,                                               DE_J  ,  DE_L  ,TD_U_UE ,  DE_Z  ,S_AMPPRC,S_CIRGRV,
+      FKEYS  ,  DE_Q  ,  DE_W  ,  DE_F  ,  DE_P  ,  DE_B  ,                                               DE_J  ,  DE_L  ,  DE_U  ,  DE_Z  ,S_AMPPRC,S_CIRGRV,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     S_ATPIPE,TD_A_AE ,  DE_R  ,  DE_S  ,  DE_T  ,  DE_D  ,                                               DE_M  ,  DE_N  ,TD_E_EUR,  DE_I  ,  DE_H  ,S_EQUAST,
+     S_ATPIPE,  DE_A  ,  DE_R  ,  DE_S  ,  DE_T  ,  DE_D  ,                                               DE_M  ,  DE_N  ,  DE_E  ,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,TD_V_SZ ,  DE_G  ,ALT_DOWN,XXXXXXX ,         SFT_ENT ,XXXXXXX ,  DE_K  ,TD_O_OE , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
+     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_G  ,ALT_DOWN,XXXXXXX ,         SFT_ENT ,XXXXXXX ,  DE_K  ,  DE_O  , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 KC_MUTE , KC_ESC ,KC_LALT ,SPC_DOWN,TAB_CTL ,         ENT_CTL, BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
