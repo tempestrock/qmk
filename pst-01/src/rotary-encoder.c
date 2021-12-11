@@ -35,8 +35,10 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     if (IS_LAYER_OFF(_DOWN)) {
       // Normal turn --> volume
       if (clockwise) {
+        tap_code(KC_RCTRL); // Jump to host if we're in the Linux VM
         tap_code(KC_AUDIO_VOL_UP);
       } else {
+        tap_code(KC_RCTRL); // Jump to host if we're in the Linux VM
         tap_code(KC_AUDIO_VOL_DOWN);
       }
     } else {

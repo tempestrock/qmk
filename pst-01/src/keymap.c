@@ -17,7 +17,6 @@
 #include "leader-key.h"
 #include "rotary-encoder.h"
 #include "shift-handling.h"
-// #include "tapdance.h"
 #include <keymap_german.h>
 
 #ifdef CONSOLE_ENABLE
