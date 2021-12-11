@@ -22,29 +22,19 @@ void matrix_scan_user_leader_key(void) {
     leader_end();
 
     // Ä
-    SEQ_ONE_KEY(KC_A) {
-      tap_code(DE_ADIA);
-    }
+    SEQ_ONE_KEY(KC_A) { tap_code(DE_ADIA); }
 
     // €
-//    SEQ_ONE_KEY(KC_E) {
-  //    tap_code(DE_EURO);
-    // }
+    SEQ_ONE_KEY(KC_E) { tap_code16(DE_EURO); }
 
     // Ö
-    SEQ_ONE_KEY(KC_O) {
-      tap_code(DE_ODIA);
-    }
+    SEQ_ONE_KEY(KC_O) { tap_code(DE_ODIA); }
 
     // Ü
-    SEQ_ONE_KEY(KC_U) {
-      tap_code(DE_UDIA);
-    }
+    SEQ_ONE_KEY(KC_U) { tap_code(DE_UDIA); }
 
     // ß
-    SEQ_ONE_KEY(KC_S) {
-      tap_code(DE_SS);
-    }
+    SEQ_ONE_KEY(KC_S) { tap_code(DE_SS); }
 
     // Comment out a line in VSCode
     SEQ_ONE_KEY(KC_P) {
@@ -72,11 +62,8 @@ void matrix_scan_user_leader_key(void) {
       tap_code(KC_N);
     }
 
-
     // Toggle the "Lights" layer on and off
-    SEQ_ONE_KEY(KC_L) {
-      layer_invert(_LIGHTS);
-    }
+    SEQ_ONE_KEY(KC_L) { layer_invert(_LIGHTS); }
 
     // Message 1
     SEQ_TWO_KEYS(KC_M, KC_T) {
