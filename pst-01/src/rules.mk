@@ -6,7 +6,6 @@
 SRC += leader-key.c
 SRC += oled.c
 SRC += rotary-encoder.c
-# SRC += tapdance.c
 
 AUDIO_ENABLE = no          # Audio output on port C6
 BACKLIGHT_ENABLE = no      # Enable keyboard backlight functionality on B7 by default
