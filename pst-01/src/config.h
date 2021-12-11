@@ -22,7 +22,7 @@
 // Definitions for the leader key
 #define LEADER_NO_TIMEOUT     // Define an infinite time between pressing the leader key and the first key of the sequence
 #define LEADER_PER_KEY_TIMING // Define that the leader key timing is measured per key, not for the whole sequence.
-#define LEADER_TIMEOUT        300
+#define LEADER_TIMEOUT        500
 
 // Definitions for the lighting
 #ifdef RGBLIGHT_ENABLE
@@ -36,7 +36,4 @@
 // Lets you roll mod-tap keys
 #define IGNORE_MOD_TAP_INTERRUPT
 
-// If you are using an Elite C rev3 on the slave side, uncomment the lines below:
-// TODO: Check if this is right!
-// #define SPLIT_USB_DETECT
-// #define NO_USB_STARTUP_CHECK
+#define SPLIT_USB_DETECT

@@ -6,6 +6,7 @@
 #include QMK_KEYBOARD_H
 #include "leader-key.h"
 #include "layers.h"
+#include "sendstring_german.h"
 
 LEADER_EXTERNS(); // Declaration of external functions
 
@@ -27,28 +28,46 @@ void matrix_scan_user_leader_key(void) {
 
     SEQ_TWO_KEYS(KC_M, KC_T) {
       // Message 1
-      SEND_STRING("Schöne Grüße\n"
-                  "Peter");
+      SEND_STRING("Sch");
+      tap_code(DE_ODIA);
+      SEND_STRING("ne Gr");
+      tap_code(DE_UDIA);
+      tap_code(DE_SS);
+      SEND_STRING("e\nPeter\n\n");
     }
 
     SEQ_TWO_KEYS(KC_M, KC_S) {
       // Message 2
-      SEND_STRING("Schöne Grüße\n"
-                  "Peter Störmer");
+      SEND_STRING("Sch");
+      tap_code(DE_ODIA);
+      SEND_STRING("ne Gr");
+      tap_code(DE_UDIA);
+      tap_code(DE_SS);
+      SEND_STRING("e\nPeter St");
+      tap_code(DE_ODIA);
+      SEND_STRING("rmer\n\n");
     }
 
     SEQ_TWO_KEYS(KC_M, KC_R) {
       // Message 3
-      SEND_STRING("Freundliche Grüße\n"
-                  "Peter Störmer");
+      SEND_STRING("Freundliche Gr");
+      tap_code(DE_UDIA);
+      tap_code(DE_SS);
+      SEND_STRING("e\nPeter St");
+      tap_code(DE_ODIA);
+      SEND_STRING("rmer\n\n");
     }
 
-    SEQ_TWO_KEYS(KC_M, KC_A) {
+    SEQ_TWO_KEYS(KC_M, KC_W) {
       // Message 0
       SEND_STRING("\n\n"
                   "--\n\n"
-                  "störmer-consulting\n"
-                  "Dr. Peter Störmer\n\n"
+                  "st");
+      tap_code(DE_ODIA);
+      SEND_STRING("rmer-consulting\n"
+                  "Dr. Peter St");
+      tap_code(DE_ODIA);
+      SEND_STRING("rmer\n\n"
                   "+49 173 24 18 515\n"
                   "mail@stoermer-consulting.de\n"
                   "www.stoermer-consulting.de\n\n");
