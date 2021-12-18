@@ -21,7 +21,8 @@
 // define RGBLIGHT_LIMIT_VAL 150
 
 // Synchronize split keyboards
-// define RGBLIGHT_SPLIT
+#define RGBLIGHT_SPLIT
+
 #endif
 
 #endif /* RGB_LIGHT_H */

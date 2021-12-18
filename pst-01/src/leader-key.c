@@ -21,8 +21,7 @@ void matrix_scan_user_leader_key(void) {
     leading = false;
     leader_end();
 
-    SEQ_ONE_KEY(KC_J) {
-       tap_code(DE_ADIA); }
+    SEQ_ONE_KEY(KC_J) { tap_code(DE_ADIA); }
 
     // Ä
     SEQ_ONE_KEY(KC_A) { tap_code(DE_ADIA); }
@@ -71,12 +70,14 @@ void matrix_scan_user_leader_key(void) {
       unregister_code(KC_LWIN);
     }
 
-    SEQ_ONE_KEY(KC_I) {
+    SEQ_ONE_KEY(KC_I) { //
       SEND_STRING("--> ");
     }
 
     // Toggle the "Lights" layer on and off
-    SEQ_ONE_KEY(KC_L) { layer_invert(_LIGHTS); }
+    SEQ_ONE_KEY(KC_L) { //
+      layer_invert(_LIGHTS);
+    }
 
     // Message 1
     SEQ_TWO_KEYS(KC_M, KC_T) {
