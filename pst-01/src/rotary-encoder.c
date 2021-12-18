@@ -54,9 +54,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     if (IS_LAYER_OFF(_DOWN)) {
       // Normal turn --> page up/down
       if (clockwise) {
-        tap_code(KC_PGDN);
-      } else {
         tap_code(KC_PGUP);
+      } else {
+        tap_code(KC_PGDN);
       }
     } else {
       // Down key is pressed simultaneously --> <Ctrl>-<Tab>
@@ -66,9 +66,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
       }
       ctrl_tab_timer = timer_read();
       if (clockwise) {
-        tap_code16(KC_TAB);
-      } else {
         tap_code16(LSFT(KC_TAB));
+      } else {
+        tap_code16(KC_TAB);
       }
     }
   }

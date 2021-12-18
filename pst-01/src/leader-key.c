@@ -21,6 +21,9 @@ void matrix_scan_user_leader_key(void) {
     leading = false;
     leader_end();
 
+    SEQ_ONE_KEY(KC_J) {
+       tap_code(DE_ADIA); }
+
     // Ä
     SEQ_ONE_KEY(KC_A) { tap_code(DE_ADIA); }
 
@@ -56,10 +59,20 @@ void matrix_scan_user_leader_key(void) {
 
     // Minimize Window in KDE
     SEQ_ONE_KEY(KC_DOT) {
-      register_code(KC_LALT);
-      tap_code(KC_F3);
-      unregister_code(KC_LALT);
-      tap_code(KC_N);
+      register_code(KC_LWIN);
+      tap_code(KC_PGDOWN);
+      unregister_code(KC_LWIN);
+    }
+
+    // Maximize Window in KDE
+    SEQ_ONE_KEY(KC_COMMA) {
+      register_code(KC_LWIN);
+      tap_code(KC_PGUP);
+      unregister_code(KC_LWIN);
+    }
+
+    SEQ_ONE_KEY(KC_I) {
+      SEND_STRING("--> ");
     }
 
     // Toggle the "Lights" layer on and off

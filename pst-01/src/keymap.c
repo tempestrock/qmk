@@ -173,6 +173,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   case S_USCHAS: // _ --> #
     NSHIFT_SNOSHIFT(PK_UNDERSCORE, DE_HASH);
 
+  case RGB_TOG: // Lighting on/off
+    uprintf("Lighting on/off\n");
+    uprintf("rgblight_is_enabled(): %d\n", rgblight_is_enabled());
+    uprintf("rgblight_get_mode(): %d\n", rgblight_get_mode());
+    uprintf("rgblight_get_hue(): %d\n", rgblight_get_hue());
+    uprintf("rgblight_get_sat(): %d\n", rgblight_get_sat());
+    uprintf("rgblight_get_val(): %d\n", rgblight_get_val());
+    uprintf("rgblight_get_speed(): %d\n", rgblight_get_speed());
+    return true;
+
   default:
     return true;
   }

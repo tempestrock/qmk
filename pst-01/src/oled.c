@@ -4,6 +4,8 @@
  */
 
 #include QMK_KEYBOARD_H
+
+#ifdef OLED_ENABLE
 #include "layers.h"
 #include <stdio.h>
 
@@ -72,6 +74,8 @@ void oled_task_user(void) {
     // Right OLED
   }
 }
+
+#endif
 
 #ifdef AUSKOMMENTIERT
 
