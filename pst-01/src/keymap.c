@@ -203,5 +203,9 @@ void matrix_scan_user(void) {
  * 
  */
 void keyboard_post_init_user(void) {
+
+#ifdef RGBLIGHT_ENABLE
   keyboard_post_init_user_rgb_light();
+#endif
+
 }

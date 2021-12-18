@@ -4,7 +4,6 @@
  */
 
 #include QMK_KEYBOARD_H
-#include "rgb-light.h"
 
 #ifdef RGBLIGHT_ENABLE
 

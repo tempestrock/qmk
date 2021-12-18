@@ -17,7 +17,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "rgb-light.h"
+#include "rgb-light-config.h"
 
 // Definitions for tap dance
 #define TAPPING_TERM 175
