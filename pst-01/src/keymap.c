@@ -13,11 +13,11 @@
  */
 
 #include QMK_KEYBOARD_H
+#include <keymap_german.h>
 #include "layers.h"
 #include "leader-key.h"
 #include "rotary-encoder.h"
 #include "shift-handling.h"
-#include <keymap_german.h>
 
 #ifdef CONSOLE_ENABLE
 #include "print.h" // Debug output

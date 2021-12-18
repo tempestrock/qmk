@@ -14,7 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#include "rgb-light.h"
 
 // Definitions for tap dance
 #define TAPPING_TERM 175
@@ -24,16 +27,9 @@
 #define LEADER_PER_KEY_TIMING // Define that the leader key timing is measured per key, not for the whole sequence.
 #define LEADER_TIMEOUT        400
 
-// Definitions for the lighting
-#ifdef RGBLIGHT_ENABLE
-#define RGBLIGHT_ANIMATIONS
-#define RGBLIGHT_HUE_STEP  8
-#define RGBLIGHT_SAT_STEP  8
-#define RGBLIGHT_VAL_STEP  8
-#define RGBLIGHT_LIMIT_VAL 150
-#endif
-
 // Lets you roll mod-tap keys
 #define IGNORE_MOD_TAP_INTERRUPT
 
 #define SPLIT_USB_DETECT
+
+#endif /* CONFIG_H */

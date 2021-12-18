@@ -6,13 +6,14 @@
 SRC += leader-key.c
 SRC += oled.c
 SRC += rotary-encoder.c
+SRC += rgb-light.c
 
 AUDIO_ENABLE = no          # Audio output on port C6
 BACKLIGHT_ENABLE = no      # Enable keyboard backlight functionality on B7 by default
 BLUETOOTH_ENABLE = no      # Enable Bluetooth with the Adafruit EZ-Key HID
 BOOTMAGIC_ENABLE = no      # lite    # Only enable key to jump into bootlaoder
 COMMAND_ENABLE = no        # Commands for debug and configuration
-CONSOLE_ENABLE = no        # Console for debug
+CONSOLE_ENABLE = yes       # Console for debug
 ENCODER_ENABLE = yes       # Enables the use of one or more encoders
 EXTRAKEY_ENABLE = yes      # Audio control and System control
 FAUXCLICKY_ENABLE = no     # Use buzzer to emulate clicky switches
