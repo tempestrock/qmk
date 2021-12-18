@@ -16,6 +16,7 @@
 #include <keymap_german.h>
 #include "layers.h"
 #include "leader-key.h"
+#include "rgb-light.h"
 #include "rotary-encoder.h"
 #include "shift-handling.h"
 
@@ -195,4 +196,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 void matrix_scan_user(void) {
   matrix_scan_user_rotary_encoder();
   matrix_scan_user_leader_key();
+}
+
+/**
+ * The very last task in the keyboard initialization process.
+ * 
+ */
+void keyboard_post_init_user(void) {
+  keyboard_post_init_user_rgb_light();
 }

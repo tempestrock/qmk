@@ -8,6 +8,9 @@
 
 // Definitions for the lighting
 #ifdef RGBLIGHT_ENABLE
+
+extern void keyboard_post_init_user_rgb_light(void);  
+
 #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
 
 // The number of LEDs in total:
