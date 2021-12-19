@@ -29,7 +29,7 @@ void writeInvert(const char *str, bool invert) {
 void display_layer_status(void) {
   int highest_layer = get_highest_layer(layer_state | default_layer_state);
 
-  writeln(" ");
+  oled_set_cursor(0,2);
   write("Layer: ");
   if (highest_layer < NUM_LAYERS) {
     writeln(layer_name[highest_layer]);
@@ -142,9 +142,11 @@ static void render_anim(void) {
   void animation_phase(void) {
     if (userIsTyping()) {
       current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
+      oled_set_cursor(0,1);
       oled_write_raw_P(tap[abs((TAP_FRAMES - 1) - current_tap_frame)], ANIM_SIZE);
     } else {
       current_idle_frame = (current_idle_frame + 1) % IDLE_FRAMES;
+      oled_set_cursor(0,1);
       oled_write_raw_P(idle[abs((IDLE_FRAMES - 1) - current_idle_frame)], ANIM_SIZE);
     }
   }
