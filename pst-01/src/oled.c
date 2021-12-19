@@ -10,9 +10,6 @@
 #include "typing.h"
 #include <stdio.h>
 
-#undef OLED_TIMEOUT
-#define OLED_TIMEOUT 30000 // number of milliseconds until the displays switch off
-
 #define NUM_IDLE_FRAMES 1
 #define NUM_TAP_FRAMES  2
 #define ANIM_FRAME_DURATION 200 // how long each frame lasts in ms
@@ -66,6 +63,16 @@ void display_mod_status(void) {
   writeInvert(("A"), (modifiers & MOD_MASK_ALT));
   writeInvert(("W"), (modifiers & MOD_MASK_GUI));
 }
+
+#ifdef RGBLIGHT_ENABLE
+/**
+ * Writes the current value of the RGBs' brightness into the display. 
+ */
+// void display_rgb_brightness(void) {
+//   static char ledBuf[5];
+//   sprintf(ledBuf, "\nBrightness: %u", (uint8_t)(rgblight_get_val() / RGBLIGHT_VAL_STEP));
+// }
+#endif /* RGBLIGHT_ENABLE */
 
 // clang-format off
 
@@ -185,6 +192,9 @@ void oled_task_user(void) {
     // Right OLED
     display_layer_status();
     display_mod_status();
+#ifdef RGBLIGHT_ENABLE
+    // display_rgb_brightness();
+#endif /* RGBLIGHT_ENABLE */
   }
 }
 
