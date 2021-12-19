@@ -75,9 +75,9 @@ void matrix_scan_user_leader_key(void) {
     }
 
     // Toggle the "Lights" layer on and off
-    SEQ_ONE_KEY(KC_L) { //
-      layer_invert(_LIGHTS);
-    }
+    // SEQ_ONE_KEY(KC_L) { //
+    //   layer_invert(_LIGHTS);
+    // }
 
     // Message 1
     SEQ_TWO_KEYS(KC_M, KC_T) {

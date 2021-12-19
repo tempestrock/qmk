@@ -8,7 +8,7 @@
 
 #ifdef RGBLIGHT_ENABLE
 
-extern void keyboard_post_init_user_rgb_light(void);  
+extern void keyboard_post_init_user_rgb_light(void);
 
 #endif /* RGBLIGHT_ENABLE */
 

@@ -7,6 +7,7 @@ SRC += leader-key.c
 SRC += oled.c
 SRC += rotary-encoder.c
 SRC += rgb-light.c
+SRC += typing.c
 
 AUDIO_ENABLE = no          # Audio output on port C6
 BACKLIGHT_ENABLE = no      # Enable keyboard backlight functionality on B7 by default
@@ -31,7 +32,6 @@ RGBLIGHT_ENABLE = yes      # Enable keyboard RGB underglow
 SLEEP_LED_ENABLE = no
 SPACE_CADET_ENABLE = no
 SPLIT_KEYBOARD = yes
-# SPLIT_TRANSPORT = mirror
 SWAP_HANDS_ENABLE = no     # Allow swapping hands of keyboard
 TAP_DANCE_ENABLE = no      # Allow tap dancing
 UNICODE_ENABLE = yes       # Unicode for Umlauts

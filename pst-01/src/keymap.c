@@ -19,10 +19,14 @@
 #include "rgb-light.h"
 #include "rotary-encoder.h"
 #include "shift-handling.h"
+#include "typing.h"
 
 #ifdef CONSOLE_ENABLE
 #include "print.h" // Debug output
 #endif
+
+const char layer_name[NUM_LAYERS][MAX_STRING_SIZE] = {"Standard", "Down", "Function"};
+// const char layer_name[NUM_LAYERS][MAX_STRING_SIZE] = {"Standard", "Down", "Function", "Lights"};
 
 /*
  * My own custom key codes. 'S_' stands for symbol.
@@ -106,6 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /*
    * Lights Layer: Set RGB lighting
    */
+  /*
   [_LIGHTS] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                             XXXXXXX ,_______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
@@ -117,6 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,         XXXXXXX ,_______ ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   )
+  */
 };
 
 // clang-format on
@@ -139,6 +145,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   //         record->event.key.col, record->event.key.row, record->event.pressed, record->event.time,
   //         record->tap.interrupted, record->tap.count);
 #endif
+
+  if (record->event.pressed) {
+    notifyTyping();
+  }
 
   switch (keycode) {
   case S_ATPIPE: // @ --> |
@@ -173,16 +183,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   case S_USCHAS: // _ --> #
     NSHIFT_SNOSHIFT(PK_UNDERSCORE, DE_HASH);
-
-  case RGB_TOG: // Lighting on/off
-    uprintf("Lighting on/off\n");
-    uprintf("rgblight_is_enabled(): %d\n", rgblight_is_enabled());
-    uprintf("rgblight_get_mode(): %d\n", rgblight_get_mode());
-    uprintf("rgblight_get_hue(): %d\n", rgblight_get_hue());
-    uprintf("rgblight_get_sat(): %d\n", rgblight_get_sat());
-    uprintf("rgblight_get_val(): %d\n", rgblight_get_val());
-    uprintf("rgblight_get_speed(): %d\n", rgblight_get_speed());
-    return true;
 
   default:
     return true;

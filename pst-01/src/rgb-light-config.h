@@ -19,7 +19,7 @@
 #define RGBLIGHT_LED_MAP { 0, 1, 2, 9, 8, 7, 4, 3, 5, 6, 0, 1, 2, 9, 8, 7, 4, 3, 5, 6 }
 
 // Synchronize split keyboards
-#define RGBLIGHT_SPLIT
+// define RGBLIGHT_SPLIT
 
 #endif /* RGBLIGHT_ENABLE */
 
