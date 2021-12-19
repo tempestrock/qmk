@@ -38,6 +38,9 @@ void matrix_scan_user_leader_key(void) {
     // ß
     SEQ_ONE_KEY(KC_S) { tap_code(DE_SS); }
 
+    // Arrow
+    SEQ_ONE_KEY(KC_I) { SEND_STRING("--> "); }
+
     // Comment out a line in VSCode
     SEQ_ONE_KEY(KC_P) {
       register_code(KC_LCTRL);
@@ -69,15 +72,6 @@ void matrix_scan_user_leader_key(void) {
       tap_code(KC_PGUP);
       unregister_code(KC_LWIN);
     }
-
-    SEQ_ONE_KEY(KC_I) { //
-      SEND_STRING("--> ");
-    }
-
-    // Toggle the "Lights" layer on and off
-    // SEQ_ONE_KEY(KC_L) { //
-    //   layer_invert(_LIGHTS);
-    // }
 
     // Message 1
     SEQ_TWO_KEYS(KC_M, KC_T) {

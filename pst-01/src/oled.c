@@ -10,6 +10,19 @@
 #include "typing.h"
 #include <stdio.h>
 
+#undef OLED_TIMEOUT
+#define OLED_TIMEOUT 30000 // number of milliseconds until the displays switch off
+
+#define NUM_IDLE_FRAMES 1
+#define NUM_TAP_FRAMES  2
+#define ANIM_FRAME_DURATION 200 // how long each frame lasts in ms
+#define ANIM_SIZE 636           // number of bytes in array, minimize for adequate firmware size, max is 1024
+
+uint32_t animTimer = 0;
+uint32_t animSleep = 0;
+uint8_t currentIdleFrame = 0;
+uint8_t currentTapFrame = 0;
+
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   return OLED_ROTATION_180; // adjust rotation
 }
@@ -26,6 +39,9 @@ void writeInvert(const char *str, bool invert) {
   oled_write(str, invert); //
 }
 
+/**
+ * Writes the name of the current layer into the display. 
+ */
 void display_layer_status(void) {
   int highest_layer = get_highest_layer(layer_state | default_layer_state);
 
@@ -39,6 +55,9 @@ void display_layer_status(void) {
   writeln(" ");
 }
 
+/**
+ * Writes the name of the current mode into the display. 
+ */
 void display_mod_status(void) {
   uint8_t modifiers = get_mods() | get_oneshot_mods();
   write("Mods:");
@@ -48,29 +67,14 @@ void display_mod_status(void) {
   writeInvert(("W"), (modifiers & MOD_MASK_GUI));
 }
 
-// WPM-responsive animation stuff here
-#define IDLE_FRAMES 1
-#define IDLE_SPEED  40 // below this wpm value your animation will idle
-
-// #define PREP_FRAMES 1 // uncomment if >1
-
-#define TAP_FRAMES          2
-#define TAP_SPEED           60 // above this wpm value typing animation to trigger
-
-#define ANIM_FRAME_DURATION 200 // how long each frame lasts in ms
-// #define SLEEP_TIMER 60000 // should sleep after this period of 0 wpm, needs fixing
-#define ANIM_SIZE 636 // number of bytes in array, minimize for adequate firmware size, max is 1024
-
-uint32_t anim_timer = 0;
-uint32_t anim_sleep = 0;
-uint8_t current_idle_frame = 0;
-// uint8_t current_prep_frame = 0; // uncomment if PREP_FRAMES >1
-uint8_t current_tap_frame = 0;
-
 // clang-format off
-// Images credit j-inc(/James Incandenza) and pixelbenny. Credit to obosob for initial animation approach.
+
+/**
+ * Renders the animation of Bongo Cat. 
+ * Images credit j-inc(/James Incandenza) and pixelbenny. Credit to obosob for initial animation approach.
+ */
 static void render_anim(void) {
-    static const char PROGMEM idle[IDLE_FRAMES][ANIM_SIZE] = {
+    static const char PROGMEM idle[NUM_IDLE_FRAMES][ANIM_SIZE] = {
         {
         0,  0,126,126, 24, 60,102, 66,  0, 12, 28,112,112, 28, 12,  0,116,116, 20, 20,124,104,  0,124,124,  0,112,120, 44, 36,124,124,0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,128, 64, 64, 32, 32, 32, 32, 16, 16, 16, 16, 16,  8,  8,  4,  4,  4,  8, 48, 64,128,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,128,128,128,
         0,  0,  0,  0,192, 96, 48, 24, 12,132,198, 98, 35, 51, 17,145,113,241,113,145, 17, 51, 35, 98,198,132, 12, 24, 48, 96,192,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 24,100,130,  2,  2,  2,  2,  2,  1,  0,  0,  0,  0,128,128,  0,  0,  0,  0,  0,  0,  0,  0,  0,128,  0, 48, 48,  0,192,193,193,194,  4,  8, 16, 32, 64,128,  0,  0,  0,128,128,128,128, 64, 64, 64, 64, 32, 32, 32, 32, 16, 16, 16, 16,  8,  8,  8,  8,  8,196,  4,196,  4,196,  2,194,  2,194,  1,  1,  1,  1,  0,  0,  0,
@@ -120,7 +124,7 @@ static void render_anim(void) {
         }
     };
      */
-    static const char PROGMEM tap[TAP_FRAMES][ANIM_SIZE] = {
+    static const char PROGMEM tap[NUM_TAP_FRAMES][ANIM_SIZE] = {
         {
         0,  0,126,126, 24, 60,102, 66,  0, 12, 28,112,112, 28, 12,  0,116,116, 20, 20,124,104,  0,124,124,  0,112,120, 44, 36,124,124,0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,128,128,  0,  0,  0,  0,  0,128, 64, 64, 32, 32, 32, 32, 16, 16, 16, 16,  8,  4,  2,  1,  1,  2, 12, 48, 64,128,  0,  0,  0,  0,  0,  0,  0,248,248,248,248,  0,  0,  0,  0,  0,128,128,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,128,128,128,
         0,  0,  0,  0,192, 96, 48, 24, 12,132,198, 98, 35, 51, 17,145,113,241,113,145, 17, 51, 35, 98,198,132, 12, 24, 48, 96,192,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 30,225,  0,  0,  1,  1,  2,  2,129,128,128,  0,  0,128,128,  0,  0,  0,  0,  0,  0,  0,  0,  0,128,  0, 48, 48,  0,  0,  1,  1,  2,  4,  8, 16, 32, 67,135,  7,  1,  0,184,188,190,159, 95, 95, 79, 76, 32, 32, 32, 32, 16, 16, 16, 16,  8,  8,  8,  8,  8,196,  4,196,  4,196,  2,194,  2,194,  1,  1,  1,  1,  0,  0,  0,
@@ -141,29 +145,27 @@ static void render_anim(void) {
   // assumes 1 frame prep stage
   void animation_phase(void) {
     if (userIsTyping()) {
-      current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
+      currentTapFrame = (currentTapFrame + 1) % NUM_TAP_FRAMES;
       oled_set_cursor(0,1);
-      oled_write_raw_P(tap[abs((TAP_FRAMES - 1) - current_tap_frame)], ANIM_SIZE);
+      oled_write_raw_P(tap[abs((NUM_TAP_FRAMES - 1) - currentTapFrame)], ANIM_SIZE);
     } else {
-      current_idle_frame = (current_idle_frame + 1) % IDLE_FRAMES;
+      currentIdleFrame = (currentIdleFrame + 1) % NUM_IDLE_FRAMES;
       oled_set_cursor(0,1);
-      oled_write_raw_P(idle[abs((IDLE_FRAMES - 1) - current_idle_frame)], ANIM_SIZE);
+      oled_write_raw_P(idle[abs((NUM_IDLE_FRAMES - 1) - currentIdleFrame)], ANIM_SIZE);
     }
   }
 
   if (userIsTyping()) {
-    // oled_on(); // not essential but turns on animation OLED with any alpha keypress
-    if (timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION) {
-      anim_timer = timer_read32();
+    if (timer_elapsed32(animTimer) > ANIM_FRAME_DURATION) {
+      animTimer = timer_read32();
       animation_phase();
     }
-    anim_sleep = timer_read32();
+    animSleep = timer_read32();
   } else {
-    if (timer_elapsed32(anim_sleep) > OLED_TIMEOUT) {
-      // oled_off();
+    if (timer_elapsed32(animSleep) > OLED_TIMEOUT) {
     } else {
-      if (timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION) {
-        anim_timer = timer_read32();
+      if (timer_elapsed32(animTimer) > ANIM_FRAME_DURATION) {
+        animTimer = timer_read32();
         animation_phase();
       }
     }

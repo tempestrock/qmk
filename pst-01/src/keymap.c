@@ -13,13 +13,13 @@
  */
 
 #include QMK_KEYBOARD_H
-#include <keymap_german.h>
 #include "layers.h"
 #include "leader-key.h"
 #include "rgb-light.h"
 #include "rotary-encoder.h"
 #include "shift-handling.h"
 #include "typing.h"
+#include <keymap_german.h>
 
 #ifdef CONSOLE_ENABLE
 #include "print.h" // Debug output
@@ -49,13 +49,14 @@ enum custom_keycodes {
 // --------------- Aliases for readability ---------------
 
 #define ALT_DOWN LM(_DOWN, MOD_LALT) // Alt-Down
-#define BSP_SHFT RSFT_T(KC_BSPC) // Backspace when pressed, right Shift when held down
-#define ENT_CTL  CTL_T(KC_ENT)   // Enter when pressed,     Ctrl when held down
-#define FKEYS    OSL(_FUNCTION)  // activate the function keys as one shot or while the Fn key is held down
-#define LIGHTS   TG(_LIGHTS)     // toggle the lights layer on and off
-#define SFT_ENT  LSFT(KC_ENTER)  // <Shift>-<Enter>
+#define BSP_SHFT RSFT_T(KC_BSPC)     // Backspace when pressed, right Shift when held down
+#define DEL_SHFT RSFT_T(KC_DEL)      // Delete when pressed, right Shift when held down
+#define ENT_CTL  CTL_T(KC_ENT)       // Enter when pressed,     Ctrl when held down
+#define FKEYS    OSL(_FUNCTION)      // activate the function keys as one shot or while the Fn key is held down
+#define LIGHTS   TG(_LIGHTS)         // toggle the lights layer on and off
+#define SFT_ENT  LSFT(KC_ENTER)      // <Shift>-<Enter>
 #define SPC_DOWN LT(_DOWN, KC_SPACE) // Space when pressed, layer 'down' when held down
-#define TAB_CTL  CTL_T(KC_TAB)   // TAB when pressed,       Ctrl when held down
+#define TAB_CTL  CTL_T(KC_TAB)       // TAB when pressed,       Ctrl when held down
 
 // clang-format off
 
@@ -71,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
      S_ATPIPE,  DE_A  ,  DE_R  ,  DE_S  ,  DE_T  ,  DE_D  ,                                               DE_M  ,  DE_N  ,  DE_E  ,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_G  ,ALT_DOWN,XXXXXXX ,         SFT_ENT ,XXXXXXX ,  DE_K  ,  DE_O  , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
+     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_G  ,ALT_DOWN,XXXXXXX ,         SFT_ENT ,RGB_TOG ,  DE_K  ,  DE_O  , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 KC_MUTE , KC_ESC ,KC_LALT ,SPC_DOWN,TAB_CTL ,         ENT_CTL, BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
@@ -86,9 +87,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
      DE_LABK ,  DE_0  ,  DE_3  ,  DE_2  ,  DE_1  ,S_PARNTH,                                             DE_QUOT ,KC_LEFT ,KC_DOWN ,KC_RGHT ,XXXXXXX ,S_DOLPAR,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______ ,_______ ,  DE_6  ,  DE_5  ,  DE_4  ,S_BRCKET,_______ ,_______ ,         _______ , KC_DEL ,DE_QUES ,DE_MINS, DE_PLUS ,DE_EXLM ,DE_BSLS ,_______ ,
+     _______ ,_______ ,  DE_6  ,  DE_5  ,  DE_4  ,S_BRCKET,_______ ,_______ ,         _______ ,RGB_VAI ,DE_QUES ,DE_MINS, DE_PLUS ,DE_EXLM ,DE_BSLS ,_______ ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
-                                _______ ,_______ ,_______ ,_______ ,_______ ,         _______ , KC_DEL ,_______ ,_______ ,_______
+                                _______ ,_______ ,_______ ,_______ ,_______ ,         _______ ,DEL_SHFT,_______ ,_______ ,_______
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   ),
 
@@ -105,24 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 _______ ,_______ ,_______ ,_______ ,_______ ,         _______ ,_______ ,_______ ,_______ ,_______
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
-  ),
-
-  /*
-   * Lights Layer: Set RGB lighting
-   */
-  /*
-  [_LIGHTS] = LAYOUT(
-  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                            ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                             XXXXXXX ,_______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                             XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,         XXXXXXX ,XXXXXXX ,RGB_TOG ,RGB_VAI ,XXXXXXX ,XXXXXXX ,XXXXXXX ,_______ ,
-  //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
-                                XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,         XXXXXXX ,_______ ,XXXXXXX ,XXXXXXX ,XXXXXXX
-  //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
   )
-  */
 };
 
 // clang-format on
@@ -200,12 +184,11 @@ void matrix_scan_user(void) {
 
 /**
  * The very last task in the keyboard initialization process.
- * 
+ *
  */
 void keyboard_post_init_user(void) {
 
 #ifdef RGBLIGHT_ENABLE
   keyboard_post_init_user_rgb_light();
 #endif
-
 }
