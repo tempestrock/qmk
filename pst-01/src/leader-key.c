@@ -21,8 +21,6 @@ void matrix_scan_user_leader_key(void) {
     leading = false;
     leader_end();
 
-    SEQ_ONE_KEY(KC_J) { tap_code(DE_ADIA); }
-
     // Ä
     SEQ_ONE_KEY(KC_A) { tap_code(DE_ADIA); }
 
@@ -59,14 +57,14 @@ void matrix_scan_user_leader_key(void) {
       unregister_code(KC_LCTRL);
     }
 
-    // Minimize Window in KDE
+    // Minimize window in KDE
     SEQ_ONE_KEY(KC_DOT) {
       register_code(KC_LWIN);
       tap_code(KC_PGDOWN);
       unregister_code(KC_LWIN);
     }
 
-    // Maximize Window in KDE
+    // Maximize/restore window in KDE
     SEQ_ONE_KEY(KC_COMMA) {
       register_code(KC_LWIN);
       tap_code(KC_PGUP);
@@ -97,6 +95,16 @@ void matrix_scan_user_leader_key(void) {
 
     SEQ_TWO_KEYS(KC_M, KC_R) {
       // Message 3
+      SEND_STRING("Viele Gr");
+      tap_code(DE_UDIA);
+      tap_code(DE_SS);
+      SEND_STRING("e\nPeter St");
+      tap_code(DE_ODIA);
+      SEND_STRING("rmer\n\n");
+    }
+
+    SEQ_TWO_KEYS(KC_M, KC_V) {
+      // Message 4
       SEND_STRING("Freundliche Gr");
       tap_code(DE_UDIA);
       tap_code(DE_SS);
@@ -106,8 +114,8 @@ void matrix_scan_user_leader_key(void) {
     }
 
     SEQ_TWO_KEYS(KC_M, KC_W) {
-      // Message 0
-      SEND_STRING("\n\n"
+      // Message 9
+      SEND_STRING("\n"
                   "--\n\n"
                   "st");
       tap_code(DE_ODIA);

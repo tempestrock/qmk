@@ -72,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                            ├────────┼────────┼────────┼────────┼────────┼────────┤
      S_ATPIPE,  DE_A  ,  DE_R  ,  DE_S  ,  DE_T  ,  DE_D  ,                                               DE_M  ,  DE_N  ,  DE_E  ,  DE_I  ,  DE_H  ,S_EQUAST,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┬────────┐        ┌────────┬────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_G  ,ALT_DOWN,XXXXXXX ,         SFT_ENT ,RGB_TOG ,  DE_K  ,  DE_O  , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
+     KC_LWIN ,  DE_Y  ,  DE_X  ,  DE_C  ,  DE_V  ,  DE_G  ,ALT_DOWN,KC_LSFT ,         SFT_ENT ,RGB_TOG ,  DE_K  ,  DE_O  , KC_DOT ,KC_COMM ,S_SLSTIL,KC_LEAD ,
   //└────────┴────────┴────────┼────────┼────────┼────────┤        |        |        |        |        ├────────┼────────┼────────┼────────┴────────┴────────┘
                                 KC_MUTE , KC_ESC ,KC_LALT ,SPC_DOWN,TAB_CTL ,         ENT_CTL, BSP_SHFT,KC_RCTRL,S_USCHAS, KC_SPC
   //                           └────────┴────────┴────────┴────────┴────────┘        └────────┴────────┴────────┴────────┴────────┘
