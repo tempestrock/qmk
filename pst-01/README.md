@@ -117,7 +117,7 @@ Memory is a costly good, so optimization during the compilation and the linking 
 
 ### Building the Firmware
 
-There is a small script `bin/build-firmware.sh` available to build the firmware and copy the resulting `.hex` file into the `bin` directory. This way also the latest version of the firmware is stored in the Git repo.
+There is a small script `./bin/build-firmware.sh` available to build the firmware and copy the resulting `.hex` file into the `bin` directory. This way also the latest version of the firmware is stored in the Git repo. You can simply call the script from anywhere.
 
 ### IDE
 

@@ -15,7 +15,7 @@ uint32_t typingTimer = 0;
  * @return true if the user is currently typing, false otherwise.
  */
 bool userIsTyping(void) {
-  return (timer_elapsed32(typingTimer) < IDLE_THRESHOLD); //
+  return (timer_elapsed32(typingTimer) < IDLE_THRESHOLD);
 }
 
 /**
